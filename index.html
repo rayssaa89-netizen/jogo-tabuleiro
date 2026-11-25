@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Jogos de Tabuleiro: Marketing &amp; Vendas | Finanças &amp; Decisão</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marketing & Vendas | Finanças & Decisão</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;--bg:#0d1117;--card:#161b22;--tx:#f0f3f6;--y:#fbbf24;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{color-scheme:dark;--bg:#0d1117;--card:#161b22;--tx:#f0f3f6;--y:#fbbf24;--mu:#9ba7b4}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
 h1,h2{margin:0}
@@ -11,136 +12,624 @@ h1,h2{margin:0}
 .hero{text-align:center;padding:24px 0 8px}
 .hero h1{font-size:clamp(26px,6vw,44px);font-weight:900}
 .hero h1 span{color:var(--y)}
-.hero p{opacity:.7}
+.hero p{color:var(--mu)}
 .games{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0}
 .gc{border:2px solid #30363d;background:var(--card);border-radius:16px;padding:20px;cursor:pointer;text-align:left;color:var(--tx);font:inherit;transition:.2s}
 .gc:hover,.gc.sel{border-color:var(--y);transform:translateY(-3px)}
 .gc .ic{font-size:44px}
 .gc h2{font-size:24px;margin:6px 0}
-.gc small{opacity:.7;display:block;line-height:1.4}
+.gc small{color:var(--mu);display:block;line-height:1.4}
 .row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin:14px 0}
 .pill{border:2px solid #30363d;background:var(--card);color:var(--tx);border-radius:999px;padding:8px 18px;font-weight:700;cursor:pointer;font-size:16px}
 .pill.sel{background:var(--y);color:#000;border-color:var(--y)}
 .btn{background:var(--y);color:#000;border:0;border-radius:12px;padding:12px 26px;font-size:18px;font-weight:900;cursor:pointer}
 .btn:disabled{opacity:.4;cursor:default}
 .btn.ghost{background:#30363d;color:var(--tx);font-size:14px;padding:8px 14px}
+.legend{display:flex;gap:8px 16px;flex-wrap:wrap;justify-content:center;color:var(--mu);font-size:13px;margin:10px 0}
 #game{display:none}
 .bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
 .bar h2{font-size:clamp(16px,4vw,24px)}
-#score{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:10px}
+#score{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:10px}
 .pl{background:var(--card);border:2px solid #30363d;border-radius:12px;padding:8px 10px;font-size:13px;line-height:1.5}
 .pl.on{border-color:var(--y);box-shadow:0 0 14px #fbbf2455}
 .pl b{display:flex;align-items:center;gap:6px;font-size:14px}
 .dot{width:12px;height:12px;border-radius:50%;display:inline-block}
-.board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(6,1fr);gap:4px;aspect-ratio:4/3;width:100%;background:#010409;padding:6px;border-radius:14px;border:1px solid #30363d}
-.tile{border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:clamp(7px,1.6vw,12px);font-weight:800;text-align:center;position:relative;text-transform:uppercase;line-height:1.1;padding:2px;color:#fff;min-width:0}
-.tile i{font-style:normal;font-size:clamp(12px,3vw,26px)}
-.tile.y{color:#000}
-.pw{position:absolute;bottom:1px;display:flex;gap:1px;flex-wrap:wrap;justify-content:center}
-.pw span{width:clamp(8px,1.8vw,16px);height:clamp(8px,1.8vw,16px);border-radius:50%;border:2px solid #fff;box-shadow:0 0 6px #000}
-.center{grid-area:2/2/6/8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:6px;background:radial-gradient(circle,#161b22,#0d1117);border-radius:10px}
-.center h3{margin:0;font-size:clamp(14px,3.5vw,30px);color:var(--y)}
-#dice{font-size:clamp(34px,8vw,64px);letter-spacing:6px;line-height:1}
+
+.hero2{position:relative;text-align:center;padding:34px 8px 10px;overflow:hidden}
+.eyebrow{display:inline-block;font:800 11px Montserrat,system-ui;letter-spacing:.18em;color:var(--y);border:1px solid #fbbf2466;border-radius:999px;padding:5px 14px;background:#fbbf2410}
+.hero2 h1{font:900 clamp(32px,7vw,58px)/1.05 Montserrat,system-ui;margin:14px 0 8px}
+.hero2 h1 em{font-style:normal;background:linear-gradient(90deg,#fbbf24,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero2 p{color:var(--mu);max-width:520px;margin:0 auto;line-height:1.5}
+.fl{position:absolute;font-size:34px;opacity:.5;animation:fl 6s ease-in-out infinite;pointer-events:none}
+.f1{left:6%;top:22%}.f2{right:7%;top:12%;animation-delay:-2s}.f3{left:14%;top:70%;animation-delay:-4s}.f4{right:15%;top:64%;animation-delay:-1s}.f5{left:44%;top:2%;font-size:22px;animation-delay:-3s}
+@keyframes fl{50%{transform:translateY(-14px) rotate(12deg)}}
+.games2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:22px 0}
+.gc2{position:relative;text-align:left;color:var(--tx);font:inherit;cursor:pointer;border-radius:22px;padding:20px;border:2px solid #2a3550;background:linear-gradient(160deg,#161f33,#0f1626);overflow:hidden;transition:.25s}
+.gc2::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 100% 0,var(--c1),transparent 55%);opacity:.25;transition:.25s}
+.gc2:hover{transform:translateY(-4px)}
+.gc2.sel{border-color:var(--y);box-shadow:0 0 0 3px #fbbf2433,0 18px 40px #000a}
+.gc2.sel::before{opacity:.55}
+.gc2>*{position:relative}
+.mini{display:flex;gap:4px;margin-bottom:14px}.mini i{flex:1;height:12px;border-radius:4px;border:1px solid #fff9}
+.gc2 .ic{font-size:46px;line-height:1;filter:drop-shadow(0 4px 6px #0008)}
+.gc2 h2{font:900 26px/1.1 Montserrat,system-ui;margin:8px 0 2px}.gc2 h2 em{font-style:normal;color:var(--y)}
+.gc2 .tg{font:700 11px Montserrat,system-ui;letter-spacing:.12em;text-transform:uppercase;color:#c7d0e0;margin-bottom:8px}
+.gc2 small{display:block;color:var(--mu);font-size:14px;line-height:1.45}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}.chips span{font-size:12px;font-weight:700;background:#ffffff14;border-radius:999px;padding:4px 10px}
+.ck{position:absolute!important;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:var(--y);color:#000;font-weight:900;display:flex;align-items:center;justify-content:center;transform:scale(0);transition:.25s}
+.gc2.sel .ck{transform:scale(1)}
+.panel2{max-width:420px;margin:0 auto;text-align:center;background:#161f33;border:1px solid #2a3550;border-radius:18px;padding:14px 18px}
+.panel2 .pt{font-weight:800;font-size:14px;color:#c7d0e0}
+.btn.big{font-size:20px;padding:15px 38px;border-radius:16px;box-shadow:0 5px 0 #b45309,0 10px 30px #fbbf2455;margin-top:6px}
+.btn.big:hover{transform:translateY(-2px)}
+@media(max-width:640px){.fl{display:none}}
+.foot{text-align:center;color:var(--mu);font-size:13px}
+.board{display:grid;gap:clamp(3px,.7vw,8px);aspect-ratio:1491/1027;width:100%;background:radial-gradient(ellipse at 50% 40%,#142038,#0b1220 70%);padding:clamp(8px,2.4vw,30px);border-radius:20px;border:1px solid #2a3550;box-shadow:0 20px 60px #000a,inset 0 0 80px #0006;font-family:Montserrat,system-ui,sans-serif}
+.tile{border-radius:10px;border:clamp(2px,.25vw,3px) solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(1px,.5vw,6px);text-align:center;position:relative;text-transform:uppercase;padding:2px;min-width:0;min-height:0;box-shadow:0 4px 10px #0007,inset 0 -10px 18px #0003,inset 0 8px 14px #fff2;transition:transform .2s,box-shadow .2s;container-type:inline-size}
+.tile svg{width:34%;max-width:54px;min-width:14px;height:auto;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 2px 2px #0005)}
+.tile b{font-weight:800;font-size:clamp(5px,10.2cqw,16px);overflow-wrap:anywhere;line-height:1.12;letter-spacing:.02em;padding:0 2px}
+.tile.cur{transform:scale(1.07);z-index:3;box-shadow:0 0 0 3px #fbbf24,0 0 26px #fbbf24cc}
+.pw{position:absolute;bottom:-10px;left:0;right:0;display:flex;gap:1px;flex-wrap:wrap;justify-content:center;pointer-events:none}
+.pw span{width:clamp(11px,2.3vw,26px);height:clamp(11px,2.3vw,26px);border-radius:50%;border:2px solid #fff;box-shadow:0 3px 6px #000b,inset 0 -4px 6px #0005,inset 0 3px 4px #fff6;color:#fff;font:900 clamp(6px,1.3vw,13px)/1 system-ui;display:flex;align-items:center;justify-content:center;animation:hop .35s}
+@keyframes hop{from{transform:translateY(-14px) scale(1.3)}}
+.center{grid-area:2/2/6/7;container-type:size;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;padding:1.5cqh 1.5cqw;border-radius:14px;background:radial-gradient(circle at 50% 30%,#1a2640aa,#0b122000 75%);color:#fff;min-height:0}
+.center.f{grid-area:2/2/6/8}
+.cmid{display:flex;align-items:center;justify-content:space-between;gap:1cqw;width:100%;flex:1;min-height:0}
+.cnote{font-family:Caveat,cursive;font-weight:700;color:#fff;white-space:pre-line;line-height:1.02;font-size:clamp(14px,6.2cqh,34px);width:20cqw;flex:none}
+.cnote.l{transform:rotate(-7deg);text-align:left}.cnote.r{text-align:center}
+.cart{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1cqh}
+.cart svg{height:36cqh;width:auto;max-width:100%}
+.ttl{font-weight:900;line-height:.95;font-size:clamp(14px,8cqh,48px)}
+.ttl em{font-style:normal;color:#fbbf24}
+.tag{font-weight:600;letter-spacing:.09em;font-size:clamp(7px,3.2cqh,16px);color:#dbe3f0}
+.ctl{display:flex;align-items:center;gap:2cqw;justify-content:center;background:#0b1220cc;border:1px solid #fbbf2455;border-radius:16px;padding:1.2cqh 2cqw;backdrop-filter:blur(4px);box-shadow:0 6px 24px #0008;max-width:100%}
+#dice{font-size:clamp(28px,15cqh,64px);letter-spacing:4px;line-height:1;min-width:1.1em;filter:drop-shadow(0 3px 4px #000)}
 #dice.roll{animation:sh .15s infinite}
-@keyframes sh{50%{transform:rotate(18deg) scale(1.1)}}
-#st{font-size:clamp(11px,2.2vw,15px);opacity:.9;min-height:2.6em}
-.center .btn{padding:8px 18px;font-size:clamp(13px,3vw,18px)}
-#modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
-.mb{background:var(--card);border-radius:18px;padding:22px;max-width:420px;width:100%;border-top:8px solid var(--y);animation:pop .25s}
-@keyframes pop{from{transform:scale(.8);opacity:0}}
-.mb h2{font-size:14px;text-transform:uppercase;letter-spacing:1px;opacity:.8}
-.mb p{font-size:18px;line-height:1.4;margin:10px 0 16px}
-.mb button{display:block;width:100%;margin-top:8px;padding:12px;border-radius:10px;border:0;font-weight:800;font-size:15px;cursor:pointer;background:#30363d;color:var(--tx)}
-.mb button:hover{background:var(--y);color:#000}
+@keyframes sh{50%{transform:rotate(18deg) scale(1.15)}}
+#st{font-size:clamp(10px,4.2cqh,16px);min-height:2.4em;max-width:30cqw;display:flex;align-items:center;font-weight:700}
+.center .btn{padding:clamp(6px,2cqh,12px) clamp(12px,3cqw,24px);font-size:clamp(12px,4.6cqh,18px);box-shadow:0 4px 0 #b45309;white-space:nowrap}
+.center .btn:not(:disabled){animation:pulse 1.6s infinite}
+@keyframes pulse{50%{box-shadow:0 4px 0 #b45309,0 0 22px #fbbf24}}
+@media(max-width:640px){.tile b{display:none}.tile svg{width:58%;max-width:none}.pw span{width:15px;height:15px}.tile{border-radius:7px!important}}
+@container (max-width:560px){.cnote{display:none}.cart svg{height:30cqh}}
+.rules h3{margin:14px 0 4px;font-size:16px;color:var(--y)}.rules p,.rules li{font-size:14px;line-height:1.5;color:#d8dee6;margin:3px 0}.rules ul{margin:4px 0;padding-left:20px}
+.rules .tl{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0}.rules .tl div{display:flex;gap:8px;align-items:center;font-size:12.5px;line-height:1.3}
+.rules .tl i{width:22px;height:22px;border-radius:6px;border:2px solid #fff;flex:none}
+.mb.wide{max-width:560px}.rules #rok{position:sticky;bottom:0;box-shadow:0 -10px 14px #161b22}
+#log{margin-top:10px;background:var(--card);border:1px solid #30363d;border-radius:12px;padding:10px 12px;font-size:13px;color:var(--mu);min-height:60px}
+#log div{padding:2px 0}#log div:first-child{color:var(--tx)}
+#modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:12px;z-index:9;overflow:auto}
+.mb{width:100%;max-width:430px;max-height:96vh;overflow:auto;border-radius:18px}
+.card{background:var(--card);border:3px solid #444;border-radius:18px;overflow:hidden;animation:flip .45s}
+@keyframes flip{from{transform:rotateY(90deg) scale(.85);opacity:0}}
+.card.r-r{border-color:#60a5fa;box-shadow:0 0 22px #3b82f688}
+.card.r-l{border-color:var(--y);animation:flip .45s,glow 1.6s .45s infinite alternate}
+@keyframes glow{from{box-shadow:0 0 14px #fbbf2455}to{box-shadow:0 0 38px #fbbf24cc}}
+.ch{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.rb{font-size:11px;background:#0006;color:#fff;border-radius:999px;padding:3px 10px;letter-spacing:.08em}
+.art{position:relative;height:96px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.art span{font-size:60px;filter:drop-shadow(0 4px 8px #000a)}
+.gems{position:absolute;bottom:6px;right:12px;font-size:13px;letter-spacing:3px;color:var(--y)}
+.r-r .gems{color:#60a5fa}.r-c .gems{color:#9ba7b4}
+.r-l .art::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,#fff5 50%,transparent 65%);transform:translateX(-100%);animation:shine 2.4s .5s infinite}
+@keyframes shine{to{transform:translateX(100%)}}
+.cb{padding:14px 16px 16px}
+.who{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mu)}
+.sit{font-size:19px;font-weight:800;line-height:1.35;margin:8px 0 14px}
+.opt{display:block;width:100%;text-align:left;margin-top:8px;padding:10px 12px;border-radius:12px;border:2px solid #3b4450;background:#0d1117;color:var(--tx);font:inherit;cursor:pointer}
+.opt:hover{border-color:var(--y);background:#1c2330}
+.opt b{display:block;font-size:15px}
+.opt small{display:block;margin-top:3px;color:var(--mu);font-size:13px;line-height:1.4}
+.chosen{padding:8px 12px;border-radius:10px;background:#0d1117;font-weight:700;font-size:14px}
+.rdie{font-size:46px;text-align:center;margin:8px 0}
+.msgs{margin:10px 0;display:grid;gap:6px;font-size:15px;font-weight:700}
+.tip{background:#0d1117;border-left:4px solid var(--y);padding:8px 12px;border-radius:6px;font-size:14px;color:#d8dee6;margin-bottom:12px;line-height:1.4}
+#res .btn{width:100%}
 </style></head><body>
 <div class="wrap">
 <div id="menu">
- <div class="hero"><h1>🎲 Jogos de <span>Tabuleiro</span></h1><p>Escolha o jogo, os jogadores e bora! (todos jogam no mesmo aparelho, passando a vez)</p></div>
- <div class="games">
-  <button class="gc sel" data-g="mkt"><div class="ic">📣</div><h2>Marketing &amp; Vendas</h2><small>Planejar · Estrategizar · Conquistar. Feche vendas, negocie e conquiste clientes.</small></button>
-  <button class="gc" data-g="fin"><div class="ic">💰</div><h2>Finanças &amp; Decisão</h2><small>Planeje · Invista · Conquiste. Faça escolhas e construa seu patrimônio.</small></button>
+ <div class="hero2"><div class="fl f1">🎲</div><div class="fl f2">💰</div><div class="fl f3">📣</div><div class="fl f4">🃏</div><div class="fl f5">⭐</div>
+  <span class="eyebrow">JOGOS DE TABULEIRO · 2 A 4 JOGADORES</span>
+  <h1>Escolha seu <em>jogo</em></h1>
+  <p>Role os dados, puxe cartas, tome decisões e dê 2 voltas no tabuleiro. Quem somar mais, vence!</p></div>
+ <div class="games2">
+  <button class="gc2 sel" data-g="mkt" style="--c1:#2563eb;--c2:#7c3aed"><div class="mini"><i style="background:#15803d"></i><i style="background:#2563eb"></i><i style="background:#d64e0c"></i><i style="background:#7c3aed"></i><i style="background:#dc2626"></i><i style="background:#facc15"></i><i style="background:#1d4ed8"></i></div>
+   <div class="ic">📣</div><h2>Marketing <em>&amp; Vendas</em></h2><div class="tg">O jogo das grandes conquistas</div>
+   <small>Campanhas, negociações e clientes. Feche contratos, vença duelos e vire o jogo.</small>
+   <div class="chips"><span>6 baralhos</span><span>90 cartas</span><span>1 dado</span><span>R$ 2.000</span></div><div class="ck">✔</div></button>
+  <button class="gc2" data-g="fin" style="--c1:#16a34a;--c2:#eab308"><div class="mini"><i style="background:#15803d"></i><i style="background:#2563eb"></i><i style="background:#facc15"></i><i style="background:#dc2626"></i><i style="background:#7c3aed"></i><i style="background:#15803d"></i><i style="background:#1d4ed8"></i></div>
+   <div class="ic">💰</div><h2>Finanças <em>&amp; Decisão</em></h2><div class="tg">Grandes escolhas, grandes resultados</div>
+   <small>Planeje, invista e proteja seu dinheiro. Decisões de verdade com dicas de educação financeira.</small>
+   <div class="chips"><span>11 baralhos</span><span>165 cartas</span><span>2 dados</span><span>R$ 3.000</span></div><div class="ck">✔</div></button>
  </div>
- <div class="row"><span>Jogadores:</span><button class="pill" data-n="2">2</button><button class="pill sel" data-n="3">3</button><button class="pill" data-n="4">4</button></div>
- <div class="row"><button class="btn" id="go">Começar jogo 🚀</button></div>
- <p style="text-align:center;opacity:.6;font-size:13px">Cada jogador dá 2 voltas no tabuleiro. Vence quem tiver o maior total no final.</p>
+ <div class="panel2"><div class="pt">Quantos jogadores?</div><div class="row" style="margin:8px 0 0"><button class="pill" data-n="2">👥 2</button><button class="pill sel" data-n="3">👥 3</button><button class="pill" data-n="4">👥 4</button></div></div>
+ <div class="row"><button class="btn big" id="go">Ver regras e jogar 🚀</button></div>
+ <div class="legend"><span>⭐ Cartas lendárias</span><span>🔷 Cartas raras</span><span>🛡️ Escudo</span><span>🔥 Combo +R$ 200</span><span>⚔️ Duelos</span><span>🌍 Crises</span></div>
+ <p class="foot">Todos jogam no mesmo aparelho, passando a vez.</p>
 </div>
 <div id="game">
- <div class="bar"><h2 id="gt"></h2><button class="btn ghost" id="back">← Menu</button></div>
+ <div class="bar"><h2 id="gt"></h2><span><button class="btn ghost" id="rl">📖 Regras</button> <button class="btn ghost" id="back">← Menu</button></span></div>
  <div id="score"></div>
- <div class="board" id="board"><div class="center"><h3 id="ct"></h3><div id="dice">🎲</div><div id="st"></div><button class="btn" id="roll">Jogar dado</button></div></div>
+ <div class="board" id="board"><div class="center" id="center"><div class="cmid" id="cmid"></div><div class="ctl"><div id="dice">🎲</div><div id="st"></div><button class="btn" id="roll">Jogar dado</button></div></div></div>
+ <div id="log"></div>
 </div>
 </div>
 <div id="modal"><div class="mb" id="mb"></div></div>
 <script>
 const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const rnd=n=>1+Math.floor(Math.random()*n);
 const COL=['#ef4444','#3b82f6','#22c55e','#eab308'],LAPS=2,FACES='⚀⚁⚂⚃⚄⚅';
-const c=(t,...o)=>({t,o});
-const ok=(l,m,s,v,r)=>[l,m||0,s||0,v||0,r];
-const T={ // tipo: [cor, emoji, rótulo, deck, texto escuro]
+const RAR={c:'COMUM',r:'🔷 RARA',l:'⭐ LENDÁRIA'};
+const T={
 start:['#16a34a','➡️','Início'],
 mkt:['#2563eb','📣','Marketing'],des:['#ea580c','❓','Desafio'],est:['#7c3aed','📊','Estratégia'],neg:['#dc2626','🤝','Negociação'],ven:['#eab308','🛒','Vendas',0,1],cli:['#1d4ed8','🎯','Cliente'],
-trab:['#2563eb','💼','Trabalho e Renda'],dec:['#eab308','❓','Decisão',0,1],cred:['#dc2626','💳','Cartão'],inv:['#7c3aed','📈','Investimentos'],sorte:['#16a34a','🍀','Sorte'],casa:['#1d4ed8','🏠','Casa Própria'],eco:['#ea580c','🐷','Economia'],imp:['#dc2626','⚠️','Imprevisto'],desp:['#dc2626','🛍️','Despesas'],rel:['#2563eb','👥','Relaciona-mento'],viag:['#ea580c','✈️','Viagem']};
+trab:['#2563eb','💼','Trabalho e Renda'],dec:['#eab308','❓','Decisão',0,1],cred:['#dc2626','💳','Cartão'],inv:['#7c3aed','📈','Investimentos'],sorte:['#16a34a','🍀','Sorte'],casa:['#1d4ed8','🏠','Casa Própria'],eco:['#ea580c','🐷','Economia'],imp:['#dc2626','⚠️','Imprevisto'],desp:['#dc2626','🛍️','Despesas'],rel:['#2563eb','👥','Relacionamento'],viag:['#ea580c','✈️','Viagem']};
+
+/* ---------- CARTAS ----------
+ o(rótulo, efeito, dado_mínimo, efeito_se_acertar, efeito_se_errar)
+ efeitos: m=dinheiro s=vendas v=patrimônio mv=casas a avançar skip=perde a vez
+          oth=todos os rivais ganham/perdem steal=rouba do líder shield=ganha escudo duel=duelo */
+const o=(l,fx,th,ok,no)=>({l,fx:fx||{},r:th?{th,ok:ok||{},no:no||{}}:null});
+const K=(k,r,t,a,b,tip)=>({k,r,t,o:[a,b],tip});
 const D={
-mkt:[c('Sua campanha nas redes viralizou!',ok('Comemorar',300,1)),c('Influenciador propõe parceria.',ok('Pagar R$ 400',-400,2),ok('Recusar')),c('Novo branding da empresa.',ok('Investir R$ 200 (risco)',500,1,0,[.5,-200]),ok('Manter o logo'))],
-ven:[c('Você fechou um grande contrato!',ok('Receber R$ 500',500,1)),c('Cliente pede desconto para fechar.',ok('Dar desconto',200,1),ok('Manter preço (risco)',600,2,0,[.5,0])),c('Meta do mês batida!',ok('Bônus de R$ 300',300,1))],
-est:[c('Plano estratégico aprovado.',ok('Executar',400)),c('Concorrente lançou produto novo.',ok('Reagir rápido: R$ 300',-300,1),ok('Esperar',-100)),c('Nova ideia de posicionamento.',ok('Aplicar',200,1))],
-neg:[c('Reunião difícil com cliente.',ok('Negociar firme',300,1),ok('Ceder',-150)),c('Fornecedor oferece desconto.',ok('Aceitar',250)),c('Acordo quase fechado... e o cliente some.',ok('Insistir (risco)',500,1,0,[.4,-200]),ok('Desistir'))],
-cli:[c('Cliente elogiou seu atendimento!',ok('Pedir indicação',250,1)),c('Cliente reclama do prazo.',ok('Compensar R$ 200',-200,1),ok('Ignorar',-300)),c('Programa de fidelidade lançado.',ok('Lançar R$ 150',-150,2))],
-des:[c('Surpresa! Cliente antigo voltou.',ok('Ótimo!',400,1)),c('O sistema caiu em plena venda.',ok('Resolver',-300)),c('Feira de negócios na cidade!',ok('Participar R$ 200',300,2,0,[.6,-200]),ok('Ficar'))],
-trab:[c('Salário extra e freela!',ok('Receber',400)),c('Oportunidade de promoção.',ok('Fazer curso R$ 200',500,0,0,[.7,-200]),ok('Ignorar'))],
-dec:[c('Sobrou um dinheiro no mês.',ok('Gastar com lazer',-200),ok('Guardar',200)),c('Compra parcelada tentadora.',ok('Comprar',-400),ok('Resistir',100)),c('Vender o carro velho?',ok('Vender',500),ok('Ficar',0))],
-cred:[c('Fatura do cartão chegou!',ok('Pagar R$ 400',-400),ok('Parcelar (juros)',-600)),c('Cashback no cartão.',ok('Receber',150))],
-inv:[c('Ação em alta!',ok('Investir R$ 400',-400,0,400,[1,0]),ok('Observar')),c('Fundo imobiliário rendendo.',ok('Investir R$ 300',-300,0,330)),c('Investimento arriscado.',ok('Arriscar R$ 500',-500,0,900,[.5,0]),ok('Passar'))],
-sorte:[c('Você achou dinheiro no bolso!',ok('Pegar',200)),c('Ganhou um sorteio!',ok('Receber',500)),c('Furou o pneu...',ok('Consertar',-250))],
-casa:[c('Hora de dar entrada na casa!',ok('Entrada R$ 600',-600,0,800)),c('Reforma na casa própria.',ok('Reformar',-300,0,100))],
-eco:[c('Você economizou no mês.',ok('Guardar',300)),c('Corte de gastos supérfluos.',ok('Cortar',200))],
-imp:[c('Imprevisto médico!',ok('Pagar',-400)),c('Geladeira quebrou.',ok('Trocar',-350))],
-desp:[c('Contas do mês.',ok('Pagar',-300)),c('Promoção irresistível.',ok('Comprar',-200),ok('Ignorar',100))],
-rel:[c('Amigo oferece uma indicação de trabalho.',ok('Aceitar',350)),c('Família ajuda com um apoio.',ok('Receber',250))],
-viag:[c('Viagem dos sonhos!',ok('Viajar R$ 500',-500,0,0),ok('Adiar',100)),c('Passagem em promoção.',ok('Comprar',-250))]};
-const mk=s=>s.split(',');
+mkt:[
+K('mkt','c','Sua campanha nas redes viralizou!',o('Comemorar e aproveitar',{m:300,s:1}),o('Postar mais conteúdo',{m:100}),'Conteúdo constante mantém a audiência engajada.'),
+K('mkt','c','Um influenciador propõe parceria por R$ 400.',o('Fechar a parceria',{m:-400,s:2}),o('Recusar'),'Parcerias custam caro: sempre compare o custo com o retorno (ROI).'),
+K('mkt','c','A empresa precisa de um novo branding.',o('Investir R$ 200',0,4,{m:500,s:1},{m:-200}),o('Manter o logo atual'),'Marca forte gera confiança, mas exige consistência.'),
+K('mkt','c','Seu anúncio pago atraiu muitos curiosos.',o('Turbinar o anúncio',{m:-150,s:1}),o('Deixar como está',{m:50}),'Teste pequeno antes de escalar o investimento.'),
+K('mkt','c','Uma avaliação ruim aparece nas redes.',o('Responder com empatia',{m:-100,s:1}),o('Ignorar',{m:-250}),'Responder crises com empatia transforma críticos em fãs.'),
+K('mkt','r','Uma matéria sobre sua marca saiu na TV!',o('Aproveitar a onda',{m:400,s:2}),o('Montar plano de imprensa',{m:100,shield:1}),'Assessoria de imprensa protege a reputação em momentos de crise.'),
+K('mkt','l','Sua campanha virou meme nacional!',o('Surfar na onda',{m:800,s:3,oth:-100}),o('Licenciar a marca',{m:500,s:1}),'Viralizar é raro: planeje para converter atenção em venda.')],
+ven:[
+K('ven','c','Você fechou um grande contrato!',o('Receber o pagamento',{m:500,s:1}),o('Pedir adiantamento',{m:300}),'Fluxo de caixa é tão importante quanto vender.'),
+K('ven','c','O cliente pede desconto para fechar hoje.',o('Dar o desconto',{m:200,s:1}),o('Manter o preço',0,4,{m:600,s:2},{}),'Desconto demais ensina o cliente a sempre pedir mais.'),
+K('ven','c','Meta do mês batida!',o('Receber o bônus',{m:300}),o('Reinvestir o bônus',{s:1}),'Reinvestir parte dos ganhos faz o negócio crescer.'),
+K('ven','c','Um lead quente chegou pelo site.',o('Ligar agora',{m:200,s:1}),o('Responder amanhã',{m:-100}),'Quanto mais rápido o contato, maior a chance de venda.'),
+K('ven','r','Na feira de negócios, seu estande lota.',o('Pagar o estande: R$ 200',0,4,{m:500,s:2},{m:-200}),o('Só visitar a feira',{m:50}),'Eventos geram contatos, mas exigem follow-up depois.'),
+K('ven','r','Um bom cliente indica outro comprador.',o('Fazer a visita',{m:300,s:1}),o('Mandar o catálogo',{m:100}),'Indicações têm a maior taxa de conversão.'),
+K('ven','l','Uma rede de lojas quer fechar um mega contrato!',o('Fechar tudo agora',{m:1000,s:3}),o('Dividir com um parceiro',{m:600,s:1,oth:100}),'Contratos grandes pedem proposta clara e entrega garantida.')],
+est:[
+K('est','c','O plano estratégico foi aprovado pela diretoria.',o('Executar o plano',{m:400}),o('Revisar antes',{m:150}),'Um bom plano só vale se for executado.'),
+K('est','c','Um concorrente lançou um produto novo.',o('Reagir rápido',{m:-300,s:1}),o('Esperar para ver',{m:-100}),'Observe os concorrentes, mas não copie: diferencie-se.'),
+K('est','c','Surgiu uma ideia de novo posicionamento.',o('Aplicar agora',{m:200,s:1}),o('Testar com poucos clientes',{m:100}),'Testar em pequena escala reduz o risco.'),
+K('est','r','A análise de mercado revela um nicho livre.',o('Entrar no nicho',0,4,{m:450,s:1},{m:-200}),o('Ignorar'),'Nichos pequenos podem ser muito lucrativos.'),
+K('est','r','Uma empresa propõe parceria estratégica.',o('Fechar a parceria',{m:250,s:1}),o('Seguir sozinho',{mv:2}),'Parcerias dividem custos e dobram o alcance.'),
+K('est','l','Chance de comprar um concorrente em crise!',o('Absorver o concorrente',{steal:300,s:2}),o('Acordo de cooperação',{m:500,oth:100}),'Crescer por aquisição exige caixa e planejamento.')],
+neg:[
+K('neg','c','Reunião difícil com um cliente importante.',o('Negociar firme',{m:300,s:1}),o('Ceder no prazo',{m:-150}),'Prepare argumentos antes de negociar.'),
+K('neg','c','Seu fornecedor oferece um desconto.',o('Aceitar',{m:250}),o('Pedir uma condição melhor',0,4,{m:400},{}),'Quem pergunta pode conseguir mais.'),
+K('neg','c','Acordo quase fechado... e o cliente some.',o('Insistir',0,4,{m:500,s:1},{m:-200}),o('Desistir'),'Persistência com respeito vence, insistência demais afasta.'),
+K('neg','r','O cliente quer pagar em 10 parcelas.',o('Aceitar o parcelamento',{m:200,s:1}),o('Exigir entrada',{m:100}),'Parcelar aumenta as vendas, mas pesa no fluxo de caixa.'),
+K('neg','r','Um concorrente tenta roubar seu cliente.',o('Oferecer uma vantagem',{m:-150,s:1}),o('Confiar na relação',0,4,{m:200},{m:-300}),'Relacionamento forte protege contra a concorrência.'),
+K('neg','l','Contrato milionário na mesa!',o('Negociar até o fim',0,3,{m:1000,s:3},{m:-100}),o('Fechar o básico',{m:400,s:1}),'Grandes negócios pedem coragem e preparo.')],
+cli:[
+K('cli','c','Um cliente elogia seu atendimento!',o('Pedir uma indicação',{m:250,s:1}),o('Só agradecer',{m:100}),'Cliente satisfeito é a melhor propaganda.'),
+K('cli','c','Um cliente reclama do prazo de entrega.',o('Compensar o cliente',{m:-200,s:1}),o('Ignorar',{m:-300}),'Resolver o problema vale mais que dar desculpas.'),
+K('cli','c','Seu programa de fidelidade ficou pronto.',o('Lançar agora',{m:-150,s:2}),o('Deixar para depois'),'Clientes fiéis compram mais vezes.'),
+K('cli','r','Sua pesquisa de satisfação tirou nota 10.',o('Publicar o depoimento',{m:200,s:1}),o('Só arquivar',{m:50}),'Depoimentos reais aumentam a confiança de novos clientes.'),
+K('cli','r','Um cliente antigo quer renovar o contrato.',o('Renovar com bônus',{m:300,s:1}),o('Renovar sem bônus',{m:150}),'Reter clientes custa menos que conquistar novos.'),
+K('cli','l','Um cliente virou embaixador da sua marca!',o('Fechar parceria',{m:600,s:2,shield:1}),o('Convidar para um evento',{m:350,s:1}),'Embaixadores vendem por você.')],
+des:[
+K('des','c','Surpresa! Um cliente antigo voltou.',o('Atender',{m:400,s:1}),o('Indicar a um colega',{m:100}),'Mantenha contato com ex-clientes.'),
+K('des','c','O sistema caiu em plena venda.',o('Consertar na hora',{m:-300}),o('Aguardar o suporte',{m:-150,skip:1}),'Ter um plano B evita prejuízos.'),
+K('des','c','Tem uma feira de negócios na cidade!',o('Participar',0,4,{m:300,s:2},{m:-200}),o('Ficar de fora'),'Networking abre portas.'),
+K('des','c','Prazo apertado: entregar em 24 horas.',o('Fazer hora extra',{m:-150,s:1}),o('Pedir mais prazo',{m:-50}),'Prazos realistas protegem a qualidade.'),
+K('des','r','Um vídeo seu viraliza por acaso.',o('Aproveitar a onda',{m:300,s:1,mv:2}),o('Deixar passar'),'Reaja rápido quando algo dá certo.'),
+K('des','r','Duelo! Um rival lança uma promoção igual à sua.',o('Aceitar o duelo de dados',{duel:1}),o('Recusar',{m:-50}),'Competir em preço nem sempre é a melhor estratégia.'),
+K('des','l','Chuva de prêmios: sua empresa ganhou um prêmio de inovação!',o('Receber o prêmio',{m:700,s:2}),o('Doar parte para uma causa',{m:400,s:1,shield:1}),'Prêmios dão credibilidade à marca.')]
+,
+trab:[
+K('trab','c','Salário extra e um bom freela!',o('Receber tudo',{m:400}),o('Poupar metade',{m:200,v:200}),'Poupar parte da renda extra constrói patrimônio.'),
+K('trab','c','Oportunidade de promoção no trabalho.',o('Fazer um curso de R$ 200',0,3,{m:500},{m:-200}),o('Ignorar'),'Investir em você mesmo costuma dar retorno.'),
+K('trab','c','Um cliente paga um serviço atrasado.',o('Receber',{m:350}),o('Dar desconto e fidelizar',{m:250,mv:1}),'Fluxo de caixa depende de quem paga em dia.'),
+K('trab','r','Chegou o reajuste salarial do ano.',o('Receber',{m:300}),o('Negociar mais',0,4,{m:500},{m:200}),'Pesquise o valor de mercado antes de negociar.'),
+K('trab','l','Proposta do emprego dos sonhos!',o('Aceitar',{m:600,v:400}),o('Abrir um negócio',0,4,{m:1000,v:600},{m:-300}),'Mudar de carreira exige planejamento e reserva.')],
+dec:[
+K('dec','c','Sobrou dinheiro no fim do mês.',o('Gastar com lazer',{m:-200}),o('Guardar',{m:200}),'Pague-se primeiro: guarde antes de gastar.'),
+K('dec','c','Uma compra parcelada está tentadora.',o('Comprar',{m:-400}),o('Resistir',{m:100}),'Parcelas pequenas somadas viram uma dívida grande.'),
+K('dec','c','Vender o carro velho?',o('Vender',{m:500}),o('Ficar com ele')),
+K('dec','r','Vale contratar um plano de saúde?',o('Contratar',{m:-200,shield:1}),o('Não contratar'),'Seguros protegem você de grandes imprevistos.'),
+K('dec','r','Um curso online está com desconto.',o('Comprar o curso',{m:-150,v:250}),o('Passar'),'Conhecimento é um investimento que ninguém tira de você.'),
+K('dec','l','Um mentor financeiro oferece ajuda!',o('Aprender com ele',{v:500,shield:1}),o('Aplicar na hora',{m:400,v:200}),'Aprender com quem já passou pelo caminho economiza anos.')],
+cred:[
+K('cred','c','A fatura do cartão chegou!',o('Pagar o valor total',{m:-400}),o('Parcelar (juros)',{m:-600}),'Os juros do rotativo estão entre os mais altos do mercado.'),
+K('cred','c','Seu cartão deu cashback.',o('Receber',{m:150}),o('Trocar por pontos',{m:50,mv:1})),
+K('cred','r','O banco aumentou o limite do seu cartão.',o('Usar para investir',{m:-300,v:450}),o('Recusar o aumento',{m:100}),'Limite alto não é dinheiro seu: use com cuidado.'),
+K('cred','l','Cartão com anuidade zero e benefícios!',o('Aproveitar',{m:300,shield:1}),o('Só guardar o cartão',{m:200}),'Compare taxas antes de escolher um cartão.')],
+inv:[
+K('inv','c','Uma ação está em alta!',o('Investir R$ 400',{m:-400,v:440}),o('Só observar'),'Nunca invista sem entender o que está comprando.'),
+K('inv','c','Um fundo imobiliário está rendendo bem.',o('Investir R$ 300',{m:-300,v:330}),o('Passar'),'Fundos imobiliários pagam renda mensal.'),
+K('inv','c','Investimento de risco alto na mesa.',o('Arriscar R$ 500',0,4,{m:-500,v:900},{m:-500}),o('Passar'),'Risco alto pode render muito ou perder tudo: nunca arrisque o que não pode perder.'),
+K('inv','r','Seu título do Tesouro Direto venceu.',o('Resgatar',{m:300}),o('Reinvestir',{v:350}),'Reinvestir os rendimentos faz o juros compostos trabalhar.'),
+K('inv','r','Os dividendos caíram na conta.',o('Receber',{m:200}),o('Reinvestir',{v:240})),
+K('inv','r','Um amigo indica um investimento "sem risco" que rende 30% ao mês.',o('Entrar com R$ 300',0,6,{m:-300,v:800},{m:-300}),o('Desconfiar e pesquisar',{m:50,shield:1}),'Promessa de lucro alto e sem risco é sinal clássico de golpe.'),
+K('inv','l','Você montou uma carteira diversificada!',o('Aplicar R$ 500',{m:-500,v:900,shield:1}),o('Aplicar R$ 200',{m:-200,v:300}),'Diversificar reduz o risco sem abrir mão do retorno.')],
+sorte:[
+K('sorte','c','Você achou dinheiro no bolso do casaco!',o('Pegar',{m:200}),o('Doar a uma causa'),'Pequenos gestos também contam.'),
+K('sorte','c','Você ganhou um sorteio!',o('Receber o prêmio',{m:500}),o('Dividir com os amigos',{m:300,oth:100})),
+K('sorte','c','O pneu furou no caminho.',o('Consertar sozinho',{m:-250}),o('Pedir ajuda a um amigo',{m:-100})),
+K('sorte','r','Saiu a restituição do imposto de renda.',o('Receber',{m:300}),o('Investir tudo',{v:330}),'Dinheiro extra é ótima hora de investir.'),
+K('sorte','r','Um vizinho oferece um negócio de revenda.',o('Aceitar',0,3,{m:400},{m:-100}),o('Recusar')),
+K('sorte','l','Você acertou a loteria!',o('Comemorar',{m:1000}),o('Dividir com todos',{m:600,oth:200}),'Prêmios são raros: ter planejamento vale mais que sorte.')],
+casa:[
+K('casa','c','Hora de dar a entrada na casa própria.',o('Dar a entrada de R$ 600',{m:-600,v:800}),o('Esperar mais um pouco'),'Casa própria é um dos maiores patrimônios de uma família.'),
+K('casa','c','A casa precisa de uma reforma.',o('Reformar',{m:-300,v:400}),o('Adiar')),
+K('casa','r','O banco ofereceu financiamento com juros baixos.',o('Fechar o financiamento',{m:-400,v:700}),o('Continuar pesquisando',{m:50}),'Compare o custo total do financiamento, não só a parcela.'),
+K('casa','l','O seu imóvel valorizou muito!',o('Manter e curtir',{v:600}),o('Vender com lucro',{m:900,v:-300}))],
+eco:[
+K('eco','c','Você economizou no mês.',o('Guardar',{m:300}),o('Investir',{v:330}),'Guardar um pouco todo mês vence guardar muito de vez em quando.'),
+K('eco','c','Você cortou gastos supérfluos.',o('Guardar',{m:200}),o('Investir',{v:220})),
+K('eco','r','Sua reserva de emergência ficou pronta!',o('Proteger-se',{shield:1,m:100}),o('Usar no que quiser',{m:300}),'A reserva ideal cobre de 3 a 6 meses de despesas.'),
+K('eco','l','Meta de poupança batida!',o('Comemorar e investir',{m:500,v:300}),o('Resgatar o dinheiro',{m:800}))],
+imp:[
+K('imp','c','Imprevisto médico!',o('Pagar',{m:-400}),o('Usar a reserva',{m:-200}),'Reserva de emergência existe para estes momentos.'),
+K('imp','c','A geladeira quebrou.',o('Trocar por uma nova',{m:-350}),o('Consertar',{m:-200})),
+K('imp','c','Você recebeu uma multa de trânsito.',o('Pagar',{m:-250}),o('Recorrer',0,4,{},{m:-350})),
+K('imp','r','O celular caiu na água.',o('Comprar um novo',{m:-400}),o('Mandar consertar',{m:-150})),
+K('imp','r','Um parente precisa de ajuda.',o('Ajudar',{m:-200}),o('Recusar')),
+K('imp','l','O seguro cobriu o prejuízo!',o('Receber',{m:300}),o('Receber e renovar',{m:200,shield:1}),'Seguros custam pouco perto do prejuízo que evitam.')],
+desp:[
+K('desp','c','Chegaram as contas do mês.',o('Pagar tudo',{m:-300}),o('Negociar os prazos',{m:-200})),
+K('desp','c','Uma promoção irresistível apareceu.',o('Comprar',{m:-200}),o('Ignorar',{m:100}),'Promoção só vale se você já ia comprar.'),
+K('desp','c','Chegou o imposto anual.',o('Pagar em dia',{m:-350}),o('Atrasar (multa)',{m:-500})),
+K('desp','r','É dia de compras do mês no mercado.',o('Comprar sem planejar',{m:-250}),o('Comprar com lista',{m:-150}),'Lista de compras economiza até 20% do orçamento.'),
+K('desp','l','Você revisou as assinaturas e cancelou as inúteis!',o('Guardar a economia',{m:300}),o('Investir a economia',{m:150,v:200,shield:1}))],
+rel:[
+K('rel','c','Um amigo indica você para um trabalho.',o('Aceitar',{m:350}),o('Recusar')),
+K('rel','c','Sua família oferece um apoio.',o('Receber',{m:250}),o('Recusar')),
+K('rel','r','Evento de networking na cidade.',o('Ir ao evento',0,3,{m:500,mv:2},{m:-100}),o('Ficar em casa'),'Boas relações abrem portas profissionais.'),
+K('rel','l','Um mentor apresenta você a um investidor!',o('Apresentar o projeto',{m:800,v:300}),o('Pedir conselhos',{m:400,shield:1}))],
+viag:[
+K('viag','c','Chegou a hora da viagem dos sonhos!',o('Viajar',{m:-500,mv:3}),o('Adiar',{m:100}),'Planejar uma meta evita usar dívidas para realizar sonhos.'),
+K('viag','c','Passagem aérea em promoção.',o('Comprar',{m:-250,mv:1}),o('Passar',{m:50})),
+K('viag','r','Uma viagem de trabalho paga pela empresa.',o('Ir',{m:300,mv:2}),o('Recusar')),
+K('viag','l','Suas milhas acumuladas renderam uma viagem!',o('Viajar de graça',{mv:4,m:200}),o('Vender as milhas',{m:500}))]
+};
+/* ---------- CARTAS NOVAS (completam 9 por baralho) ---------- */
+const add=(k,...cs)=>cs.forEach(c=>D[k].push(c));
+/* MARKETING & VENDAS */
+add('mkt',
+K('mkt','c','Uma gafe no seu post causou polêmica!',o('Pedir desculpas em público',{m:-100,shield:1}),o('Fingir que nada aconteceu',0,4,{},{m:-400,skip:1}),'Assumir o erro rápido reduz o estrago na reputação.'),
+K('mkt','r','Sua marca foi convidada para um evento ao vivo!',o('Aparecer com tudo',{m:-200,s:2,again:1}),o('Mandar só um brinde',{m:100}),'Presença física cria memória de marca.'));
+add('ven',
+K('ven','c','O cliente pediu um tempo para pensar... e sumiu.',o('Fazer follow-up',{m:-50,s:1}),o('Esperar ele voltar',{m:-100}),'A maioria das vendas só fecha depois de vários contatos.'),
+K('ven','r','Um concorrente oferece o dobro para levar seu melhor vendedor!',o('Cobrir a oferta',{m:-300,s:2}),o('Deixar ir embora',{m:-100,skip:1}),'Equipe motivada vende mais e atende melhor.'));
+add('est',
+K('est','c','A diretoria pede um corte de 10% no orçamento.',o('Cortar o que não vende',{m:200}),o('Cortar tudo igual',{m:100}),'Cortar com critério preserva o que traz resultado.'),
+K('est','r','Os dados mostram que 20% dos clientes geram 80% do lucro.',o('Focar nesses clientes',{m:300,s:1}),o('Atender todos igual',{m:100}),'É a regra 80/20: priorize o que mais rende.'),
+K('est','l','Virada de jogo! Sua estratégia surpreende o mercado inteiro.',o('Virar o jogo',{swap:1,s:1}),o('Garantir o lucro',{m:600,s:2}),'Uma boa estratégia muda as regras do jogo.'));
+add('neg',
+K('neg','c','O cliente pede uma garantia estendida de graça.',o('Aceitar',{m:-100,s:1}),o('Oferecer a garantia paga',{m:150}),'Todo benefício extra deve estar no preço.'),
+K('neg','r','Dois clientes querem a mesma data de entrega.',o('Priorizar o maior contrato',{m:300,s:1}),o('Dividir a equipe',{m:200}),'Priorizar exige clareza sobre o que mais importa.'),
+K('neg','l','Rodada final! O cliente só fecha se você ceder em tudo.',o('Ceder e fidelizar',{m:300,s:3}),o('Bater o pé',0,5,{m:900,s:3},{m:-300,skip:1}),'Saber o seu limite é a melhor arma de negociação.'));
+add('cli',
+K('cli','c','Um cliente esqueceu de pagar a fatura.',o('Cobrar com gentileza',{m:150}),o('Dar um prazo extra',{m:100,s:1}),'Cobrança educada preserva o relacionamento.'),
+K('cli','r','Um cliente insatisfeito ameaça cancelar tudo!',o('Ouvir e resolver',{m:-150,s:1}),o('Oferecer reembolso',{m:-300,shield:1}),'Quem reclama ainda quer ficar: aproveite a chance.'),
+K('cli','l','Seu cliente mais antigo gravou um vídeo elogiando você!',o('Compartilhar em todas as redes',{m:500,s:2,oth:-100}),o('Agradecer com um presente',{m:300,s:1,shield:1}),'Prova social vale mais que qualquer anúncio.'));
+add('des',
+K('des','c','A internet caiu no dia da grande reunião.',o('Usar o celular como roteador',{m:-50}),o('Remarcar a reunião',{m:-200,skip:1}),'Sempre tenha um plano B para as ferramentas críticas.'),
+K('des','l','Crise no mercado! Todos os negócios perdem faturamento.',o('Reagir com uma campanha',{every:-200,s:2}),o('Cortar custos e segurar o caixa',{every:-200,m:300}),'Em tempos de crise, quem se prepara sai na frente.'));
+/* FINANÇAS & DECISÃO */
+add('trab',
+K('trab','c','Seu chefe pede para você ficar até mais tarde.',o('Fazer hora extra',{m:200}),o('Recusar educadamente'),'Hora extra deve ser paga: conheça seus direitos.'),
+K('trab','c','Você foi indicado para liderar um projeto.',o('Aceitar o desafio',{m:150,v:100}),o('Recusar'),'Novas responsabilidades costumam trazer novas oportunidades.'),
+K('trab','r','A empresa oferece participação nos lucros!',o('Receber',{m:400}),o('Investir tudo',{v:450}),'Parte do bônus pode virar patrimônio.'),
+K('trab','l','Sua startup recebeu uma proposta de compra!',o('Vender a empresa',{m:1100}),o('Continuar e crescer',0,4,{m:300,v:1000},{m:-200}),'Vender ou crescer? Decida com planejamento, não com emoção.'));
+add('dec',
+K('dec','c','Black Friday: a TV dos seus sonhos está com 40% de desconto.',o('Comprar agora',{m:-500}),o('Pesquisar o preço antes',{m:50}),'Muitos descontos são calculados sobre um preço inflado.'),
+K('dec','r','Dá para trocar a dívida do carro por uma mais barata.',o('Trocar e economizar',{m:200}),o('Manter como está'),'Comparar taxas é o jeito mais fácil de economizar.'),
+K('dec','r','Um amigo pede um empréstimo de R$ 300.',o('Emprestar',0,4,{m:100},{m:-300}),o('Recusar educadamente'),'Empreste só o que você pode perder sem se prejudicar.'));
+add('cred',
+K('cred','c','Você esqueceu de pagar a fatura no vencimento.',o('Pagar com multa',{m:-450}),o('Parcelar a dívida',{m:-300,skip:1}),'Programe o débito automático para nunca atrasar.'),
+K('cred','c','O cartão oferece parcelamento em 12x sem juros.',o('Aproveitar',{m:-150,mv:1}),o('Pagar à vista com desconto',{m:-200}),'Parcelado sem juros pode esconder um preço mais alto.'),
+K('cred','c','Chegou um cartão novo que você não pediu.',o('Cancelar'),o('Ativar e usar',{m:-200}),'Cartão sem controle vira dívida.'),
+K('cred','r','Você consegue transferir sua dívida para uma taxa menor!',o('Fazer a portabilidade',{m:200}),o('Manter como está',{m:-100}),'Portabilidade de dívida é um direito do consumidor.'),
+K('cred','l','Você quitou todas as dívidas do cartão!',o('Comemorar',{m:400,shield:1}),o('Investir o alívio',{m:200,v:300,shield:1}),'Dívida zerada é o primeiro passo para investir.'));
+add('inv',
+K('inv','c','Um amigo propõe abrir uma sociedade com você.',o('Investir R$ 300',0,4,{m:-300,v:700},{m:-300}),o('Recusar'),'Sociedade sem contrato é receita para conflito.'),
+K('inv','l','A bolsa disparou! Sua carteira valorizou muito!',o('Realizar o lucro',{m:900}),o('Segurar os investimentos',{v:700,shield:1}),'Quem investe com calma ganha com o tempo.'));
+add('sorte',
+K('sorte','c','Você encontrou uma nota de R$ 100 na calçada.',o('Ficar com ela',{m:100}),o('Entregar a quem perdeu'),'Honestidade também é um valor.'),
+K('sorte','r','Um tio rico decidiu te ajudar.',o('Aceitar o dinheiro',{m:400}),o('Pedir conselhos',{m:200,shield:1}),'O melhor presente é o conhecimento.'),
+K('sorte','r','Um prêmio de produtividade caiu na sua conta.',o('Receber',{m:350}),o('Investir',{v:400}),'Dinheiro extra rende mais quando é investido.'));
+add('casa',
+K('casa','c','Alugar ou comprar? Você pesquisa as duas opções.',o('Alugar',{m:-100}),o('Comprar',{m:-300,v:400}),'Compare custo de aluguel e de financiamento no longo prazo.'),
+K('casa','c','A conta de luz veio altíssima!',o('Trocar as lâmpadas e economizar',{m:-100,v:100}),o('Ignorar',{m:-200}),'Pequenos ajustes economizam muito ao longo do ano.'),
+K('casa','c','Apareceu uma goteira no teto.',o('Consertar agora',{m:-150}),o('Deixar para depois',{m:-400}),'Manutenção em dia custa menos que o conserto grande.'),
+K('casa','r','Você vai montar a casa dos sonhos.',o('Fazer a obra aos poucos',{m:-250,v:350}),o('Comprar tudo parcelado',{m:-400,v:350}),'Planejar a obra por etapas evita dívidas.'),
+K('casa','l','Você terminou de pagar a casa!',o('Comemorar',{m:500,v:500,shield:1}),o('Alugar um quarto',{m:900}),'Patrimônio quitado traz segurança para a família.'));
+add('eco',
+K('eco','c','Você levou marmita para o trabalho a semana toda.',o('Guardar',{m:150}),o('Investir',{v:170}),'Pequenas economias diárias viram grandes valores no ano.'),
+K('eco','c','Por um mês você trocou o carro por transporte público.',o('Guardar',{m:250}),o('Investir',{v:280})),
+K('eco','r','Uma promoção de supermercado pede para estocar.',o('Comprar com cuidado',{m:150}),o('Comprar demais',{m:-250}),'Estoque só vale para o que você realmente consome.'),
+K('eco','r','Desafio de 30 dias sem gastos supérfluos!',o('Aceitar o desafio',0,4,{m:500},{m:-100}),o('Não participar'),'Desafios ajudam a criar o hábito de poupar.'),
+K('eco','l','Você bateu a meta anual de poupança!',o('Comemorar e investir',{m:300,v:500}),o('Resgatar e passear',{m:900}),'Metas claras mantêm você no caminho.'));
+add('imp',
+K('imp','c','O carro precisou de um conserto inesperado.',o('Pagar na hora',{m:-350}),o('Pedir mais orçamentos',{m:-250}),'Sempre peça mais de um orçamento.'),
+K('imp','r','Sua internet caiu e você perdeu um trabalho freela!',o('Aceitar o prejuízo',{m:-200}),o('Contratar uma internet reserva',{m:-150,shield:1}),'Quem trabalha online precisa de um plano B.'),
+K('imp','l','Crise econômica! O dólar disparou e todos perdem dinheiro.',o('Se proteger',{every:-200,shield:1}),o('Aproveitar a crise',{every:-200,v:300}),'Em crises, quem tem reserva toma as melhores decisões.'));
+add('desp',
+K('desp','c','Convite de casamento: presente, roupa e viagem.',o('Gastar sem limite',{m:-300}),o('Gastar com consciência',{m:-150}),'Defina um teto antes de sair para gastar.'),
+K('desp','c','O aluguel subiu!',o('Pagar sem reclamar',{m:-250}),o('Negociar com o proprietário',0,4,{m:-100},{m:-350}),'Negociar custa um minuto e pode economizar muito.'),
+K('desp','r','Um aplicativo de delivery está com cupom.',o('Pedir todo dia',{m:-300}),o('Cozinhar em casa',{m:100}),'Pequenos gastos diários pesam no fim do mês.'),
+K('desp','l','Você fez um orçamento e sobrou dinheiro todo mês!',o('Guardar',{m:400}),o('Investir',{m:100,v:400,shield:1}),'Controlar o orçamento é o primeiro passo da liberdade financeira.'));
+add('rel',
+K('rel','c','Você ajudou um colega e ele agradeceu.',o('Aceitar o elogio',{m:100}),o('Pedir ajuda também',{m:200}),'Boas relações são via de mão dupla.'),
+K('rel','c','Um conhecido oferece desconto por amizade.',o('Aceitar',{m:150}),o('Comparar preços antes',{m:200}),'Amizade não dispensa pesquisar preço.'),
+K('rel','r','Um colega propõe dividir o aluguel.',o('Aceitar',{m:300}),o('Recusar'),'Dividir despesas reduz o custo de vida.'),
+K('rel','r','Um parente quer entrar com você num negócio.',o('Aceitar',0,4,{m:500},{m:-200}),o('Recusar'),'Negócio com família também pede contrato.'),
+K('rel','l','Sua rede de contatos virou seu maior patrimônio!',o('Pedir uma indicação',{m:900}),o('Mentorar alguém',{m:500,shield:1,oth:100}),'Quem ajuda os outros costuma ser lembrado.'));
+add('viag',
+K('viag','c','Ônibus ou avião: como você vai viajar?',o('De avião',{m:-300,mv:3}),o('De ônibus',{m:-120,mv:1}),'O jeito mais barato também pode ser bom.'),
+K('viag','c','Fim de semana na praia com os amigos.',o('Ir',{m:-200,mv:2}),o('Ficar em casa',{m:50})),
+K('viag','r','Uma passagem a R$ 99 apareceu de última hora!',o('Embarcar já',{m:-99,mv:3}),o('Deixar passar')),
+K('viag','r','Pacote de viagem com cancelamento grátis.',o('Reservar',{m:-150,mv:2}),o('Deixar para depois'),'Cancelamento grátis reduz o risco da reserva.'),
+K('viag','l','Sorteio: viagem internacional com tudo pago!',o('Viajar',{mv:5,m:300}),o('Vender o prêmio',{m:700}),'Vale a pena planejar viagens com antecedência.'));
+
+/* ---------- SEGUNDA LEVA: 15 CARTAS POR BARALHO ---------- */
+/* MARKETING & VENDAS */
+add('mkt',
+K('mkt','c','Você testou dois anúncios e um foi muito melhor.',o('Dobrar a verba no vencedor',{m:-100,s:2}),o('Manter os dois',{m:50}),'Teste A/B mostra o que o público realmente prefere.'),
+K('mkt','c','Seu site está lento e os clientes desistem.',o('Otimizar o site',{m:-150,s:1}),o('Esperar',{m:-100}),'Cada segundo a mais de carregamento derruba as vendas.'),
+K('mkt','c','Chegou a data comemorativa mais importante do ano.',o('Fazer campanha temática',{m:-150,s:2}),o('Postar só uma foto',{m:50}),'Datas especiais vendem muito, mas pedem planejamento.'),
+K('mkt','r','Um YouTuber testou seu produto ao vivo!',o('Patrocinar o vídeo',{m:-200,s:2,again:1}),o('Só comentar o vídeo',{m:100,s:1}),'Opinião de terceiros pesa mais que propaganda própria.'),
+K('mkt','r','Seu slogan foi copiado por uma grande marca.',o('Defender a marca',0,4,{m:400,s:1},{m:-250}),o('Criar um slogan novo',{m:-100,s:1}),'Registrar a marca protege o seu nome.'),
+K('mkt','l','Sua marca foi eleita a mais amada do ano!',o('Lançar uma linha especial',{m:900,s:3}),o('Licenciar para parceiros',{m:600,oth:-100}),'Marca amada vende mais caro e perde menos clientes.'));
+add('ven',
+K('ven','c','Um cliente indeciso hesita entre dois planos.',o('Indicar o plano ideal para ele',{m:150,s:1}),o('Empurrar o mais caro',0,4,{m:350,s:1},{m:-100}),'Vender o que o cliente precisa gera confiança e novas compras.'),
+K('ven','c','Seu catálogo de produtos está desatualizado.',o('Atualizar agora',{m:-100,s:1}),o('Seguir como está',{m:-50}),'Catálogo atual evita pedidos de produtos que não existem.'),
+K('ven','c','O vendedor mais experiente quer dividir os segredos dele.',o('Fazer um treinamento',{m:-100,s:2}),o('Ignorar'),'Conhecimento compartilhado multiplica os resultados.'),
+K('ven','r','Uma cliente grande pede visita presencial em outra cidade.',o('Ir pessoalmente',{m:-200,s:2,mv:1}),o('Fazer videochamada',{m:100,s:1}),'Estar presente mostra o quanto o cliente é importante.'),
+K('ven','r','O cliente quer fechar, mas pede 90 dias para pagar.',o('Aceitar o prazo',{m:300,s:2}),o('Exigir 30 dias',0,4,{m:500,s:2},{}),'Prazo longo vende mais, mas aperta o caixa.'),
+K('ven','l','Black Friday: sua loja vende como nunca!',o('Reforçar o estoque',{m:900,s:4}),o('Dar bônus à equipe',{m:600,s:2,shield:1}),'Estoque e equipe preparados transformam picos em lucro.'));
+add('est',
+K('est','c','Hora de definir as metas do próximo trimestre.',o('Metas ambiciosas',{m:-100,s:2}),o('Metas seguras',{m:150}),'Metas claras e mensuráveis orientam toda a equipe.'),
+K('est','c','O custo da matéria-prima subiu 15%.',o('Repassar ao preço',{m:100}),o('Absorver o custo',{m:-250}),'Revise os preços sempre que os custos mudarem.'),
+K('est','c','Você tem uma ideia de produto novo, mas falta caixa.',o('Lançar um teste pequeno',{m:-100,s:1}),o('Esperar mais um pouco',{m:50}),'Produto mínimo viável valida a ideia gastando pouco.'),
+K('est','r','O mercado muda: seu produto principal está saindo de moda.',o('Reinventar o produto',{m:-300,s:2}),o('Seguir como está',0,4,{m:300},{m:-400}),'Quem não se reinventa fica para trás.'),
+K('est','r','Você pode expandir para uma nova cidade.',o('Abrir uma filial',{m:-400,s:3}),o('Vender online para lá',{m:-100,s:1}),'Expandir exige caixa e conhecimento do novo mercado.'),
+K('est','l','Um investidor quer comprar parte da sua empresa!',o('Aceitar o investimento',{m:1000,s:1}),o('Recusar e crescer sozinho',0,4,{m:700,s:3},{m:-200}),'Sócio investidor traz dinheiro, mas divide o controle.'));
+add('neg',
+K('neg','c','O cliente quer um desconto por pagar à vista.',o('Dar 5% de desconto',{m:250,s:1}),o('Dar 15% de desconto',{m:100,s:1}),'Desconto à vista melhora o caixa, mas não exagere.'),
+K('neg','c','Um fornecedor atrasou a entrega.',o('Cobrar uma compensação',{m:150}),o('Aceitar o atraso',{m:-150}),'Cobrar o que foi combinado é um direito de quem compra.'),
+K('neg','c','O cliente propõe pagar metade agora e metade depois.',o('Aceitar',{m:200,s:1}),o('Pedir 70% de entrada',0,4,{m:300,s:1},{m:100}),'A entrada protege você de calote.'),
+K('neg','r','Uma empresa grande quer exclusividade com você.',o('Aceitar a exclusividade',{m:500,s:2}),o('Manter vários clientes',{m:200,s:1}),'Depender de um só cliente é arriscado.'),
+K('neg','r','O cliente pede para reduzir o preço "para mostrar ao chefe".',o('Ceder',{m:-100,s:1}),o('Mostrar o valor do serviço',0,4,{m:400,s:2},{m:-100}),'Quem mostra valor negocia menos preço.'),
+K('neg','l','Reunião decisiva: o concorrente também está na sala!',o('Fazer a melhor proposta',0,3,{m:1000,s:3},{m:-200}),o('Propor uma parceria',{m:500,s:1,oth:100}),'Às vezes o concorrente pode virar parceiro.'));
+add('cli',
+K('cli','c','Um cliente quer trocar o produto sem motivo.',o('Aceitar a troca',{m:-100,s:1}),o('Explicar a política de trocas',{m:50}),'Políticas claras evitam mal-entendidos.'),
+K('cli','c','Um cliente novo pergunta como tudo funciona.',o('Fazer um tutorial',{m:-50,s:1}),o('Mandar o manual',{m:50}),'Quem entende o produto usa mais e reclama menos.'),
+K('cli','c','Hoje é aniversário de um cliente fiel.',o('Mandar um mimo',{m:-50,s:1}),o('Nem lembrar'),'Pequenos gestos criam clientes para a vida toda.'),
+K('cli','r','Seu cliente indicou três amigos de uma vez!',o('Dar um bônus a ele',{m:-100,s:3}),o('Só agradecer',{m:300,s:1}),'Programas de indicação fazem a base crescer sozinha.'),
+K('cli','r','Uma reclamação virou assunto nas redes.',o('Responder com transparência',{m:-200,shield:1,s:1}),o('Apagar o comentário',{m:-400}),'Esconder críticas só piora a situação.'),
+K('cli','l','Seu cliente ganhou um prêmio usando o seu produto!',o('Divulgar a história',{m:900,s:3}),o('Pedir um vídeo de depoimento',{m:500,s:2,shield:1}),'Histórias reais de sucesso vendem sozinhas.'));
+add('des',
+K('des','c','Faltou luz na hora de fechar o pedido.',o('Usar o gerador',{m:-100}),o('Fechar no dia seguinte',{m:-150}),'Imprevistos testam a organização do negócio.'),
+K('des','c','O entregador se atrasou e o cliente está esperando.',o('Pedir desculpas e dar um brinde',{m:-100,s:1}),o('Culpar o trânsito',{m:-250}),'Assuma o problema, não procure culpados.'),
+K('des','c','Um erro de planilha mandou o preço errado ao cliente.',o('Assumir e corrigir',{m:-150}),o('Manter o preço errado',{m:-300,skip:1}),'Erros acontecem: o que importa é como você corrige.'),
+K('des','r','Uma tempestade fecha as ruas, mas a loja online bomba!',o('Reforçar o atendimento online',{m:-100,s:3}),o('Pausar as vendas',{m:-200}),'Canais digitais protegem o negócio de imprevistos.'),
+K('des','r','Desafio da equipe: quem vender mais nesta rodada ganha um bônus.',o('Aceitar o duelo de dados',{duel:1}),o('Passar',{m:-50}),'Competição saudável motiva a equipe.'),
+K('des','l','Chuva de oportunidades: uma celebridade usou seu produto!',o('Aproveitar na hora',{m:900,s:3,again:1}),o('Montar uma coleção especial',{m:600,s:2,shield:1}),'Esteja pronto para agir quando a oportunidade aparece.'));
+/* FINANÇAS & DECISÃO */
+add('trab',
+K('trab','c','Você ganhou uma gorjeta generosa.',o('Guardar',{m:150}),o('Investir',{v:170}),'Renda extra pode virar patrimônio.'),
+K('trab','c','O chefe pede para você fazer o trabalho de duas pessoas.',o('Pedir aumento em troca',0,4,{m:400},{m:-100}),o('Aceitar calado'),'Peça reconhecimento quando assumir mais responsabilidade.'),
+K('trab','c','Você vendeu artesanato numa feira.',o('Receber e guardar',{m:250}),o('Montar uma loja online',{m:-100,v:300}),'Pequenos negócios podem virar uma segunda renda.'),
+K('trab','r','Uma empresa quer contratar você como consultor.',o('Aceitar',{m:450,again:1}),o('Pedir o dobro',0,4,{m:800},{m:100}),'Conheça o valor do seu trabalho antes de negociar.'),
+K('trab','r','Você foi demitido, mas recebeu o acerto completo.',o('Guardar para a recolocação',{m:500,shield:1}),o('Gastar numa viagem',{m:300,mv:2}),'Em transição de carreira, a reserva é a sua maior aliada.'),
+K('trab','l','Seu projeto foi escolhido o melhor do ano na empresa!',o('Receber o prêmio',{m:900,v:200}),o('Pedir uma promoção',{m:600,v:400,shield:1}),'Resultados concretos fortalecem seu poder de negociação.'));
+add('dec',
+K('dec','c','Pagar a escola à vista com desconto ou parcelar?',o('Pagar à vista',{m:-300}),o('Parcelar',{m:-400}),'À vista costuma ter desconto, mas cuide do seu caixa.'),
+K('dec','c','O que fazer com o 13º salário?',o('Quitar as dívidas',{m:300,shield:1}),o('Fazer uma festa',{m:100}),'Quitar dívidas caras é o melhor "investimento".'),
+K('dec','c','Comprar um celular novo ou usar o velho mais um ano?',o('Comprar o novo',{m:-500}),o('Usar o velho',{m:150}),'Nem toda troca de aparelho é necessária.'),
+K('dec','r','Surgiu uma chance de estudar no exterior.',o('Aceitar o desafio',{m:-300,v:600}),o('Ficar'),'Educação é o investimento de maior retorno.'),
+K('dec','r','Um vizinho vende um carro barato.',o('Comprar e revender',0,4,{m:-400,v:800},{m:-400,v:200}),o('Recusar'),'Comprar para revender exige pesquisa de mercado.'),
+K('dec','l','Você encontrou um planejador financeiro que muda sua vida.',o('Seguir o plano dele',{v:700,shield:1}),o('Fazer por conta própria',{m:300,v:200}),'Quem planeja chega mais longe.'));
+add('cred',
+K('cred','c','A loja oferece cartão próprio com 10% de desconto hoje.',o('Aceitar e usar com cuidado',{m:100}),o('Recusar'),'O desconto de hoje pode virar anuidade amanhã.'),
+K('cred','c','Sua fatura veio com uma compra que você não reconhece.',o('Contestar com o banco',{m:200}),o('Pagar sem verificar',{m:-200}),'Confira sempre a fatura antes de pagar.'),
+K('cred','c','Você atingiu o limite do cartão.',o('Pedir aumento de limite',{m:-100}),o('Controlar os gastos',{m:100}),'Limite não é renda extra.'),
+K('cred','r','O banco ofereceu um cartão com pontos e sala VIP.',o('Aceitar com anuidade',{m:-200,mv:2}),o('Recusar',{m:50}),'Benefícios só valem se compensarem a anuidade.'),
+K('cred','r','Você pagou a fatura em dia por 12 meses seguidos!',o('Pedir aumento de limite',{m:300}),o('Pedir mais benefícios',{m:200,shield:1}),'Bom histórico abre portas com os bancos.'),
+K('cred','l','O banco perdoou seus juros por ser bom pagador!',o('Comemorar',{m:700}),o('Aproveitar e investir',{m:300,v:500,shield:1}),'Ser bom pagador tem recompensas.'));
+add('inv',
+K('inv','c','O dólar subiu e você tem uma pequena reserva em moeda estrangeira.',o('Vender',{m:300}),o('Manter',{v:350}),'Diversificar em moedas reduz o risco.'),
+K('inv','c','Seu corretor sugere um CDB com liquidez diária.',o('Investir R$ 300',{m:-300,v:330}),o('Passar'),'Liquidez diária permite resgatar quando precisar.'),
+K('inv','c','Um conhecido oferece uma criptomoeda "que vai explodir".',o('Arriscar R$ 200',0,5,{m:-200,v:600},{m:-200}),o('Pesquisar antes',{m:50}),'Nunca invista sem entender o ativo.'),
+K('inv','r','Sua carteira de ações caiu 15% num mês.',o('Manter com calma',{v:100}),o('Vender tudo',{m:200}),'Oscilações fazem parte: quem vende no pânico perde.'),
+K('inv','r','Oportunidade: um terreno em área que vai valorizar.',o('Comprar por R$ 500',{m:-500,v:800}),o('Passar'),'Imóveis de longo prazo exigem paciência.'),
+K('inv','l','Seu investimento mensal virou uma bola de neve!',o('Resgatar uma parte',{m:700}),o('Deixar render',{v:900}),'O tempo é o melhor aliado dos juros compostos.'));
+add('sorte',
+K('sorte','c','Você ganhou um brinde numa promoção.',o('Vender o brinde',{m:200}),o('Dar de presente',{mv:1})),
+K('sorte','c','Você achou uma moeda rara na rua!',o('Vender a um colecionador',{m:300}),o('Guardar de lembrança',{v:200})),
+K('sorte','c','Um amigo pagou uma dívida antiga que você tinha esquecido.',o('Receber',{m:250}),o('Perdoar a dívida')),
+K('sorte','r','Você ganhou uma bolsa de estudos parcial!',o('Aceitar',{m:200,v:400}),o('Trocar por dinheiro',{m:350})),
+K('sorte','r','Uma árvore caiu no terreno do vizinho, não no seu!',o('Comemorar',{m:200}),o('Ajudar o vizinho',{m:-100,again:1}),'Boas ações costumam voltar.'),
+K('sorte','l','Você foi sorteado como o cliente do milhão!',o('Ficar com o prêmio',{m:1200}),o('Dividir com a família',{m:700,oth:150,shield:1}),'Prêmios são raros: planejamento vale mais que sorte.'));
+add('casa',
+K('casa','c','Você pesquisa os preços dos móveis da casa.',o('Comprar usados',{m:-100,v:150}),o('Comprar novos',{m:-300,v:200}),'Móveis usados em bom estado economizam muito.'),
+K('casa','c','O condomínio aumentou a taxa.',o('Pagar e reclamar',{m:-100}),o('Propor economia coletiva',0,4,{m:100},{m:-200}),'Reuniões de condomínio também são decisões financeiras.'),
+K('casa','c','O IPTU chegou.',o('Pagar à vista com desconto',{m:-200}),o('Parcelar',{m:-250}),'Pagar à vista costuma render desconto.'),
+K('casa','r','Um vizinho quer comprar seu terreno extra.',o('Vender',{m:700,v:-300}),o('Manter',{v:200}),'Vender ou manter? Pense no longo prazo.'),
+K('casa','r','Chance de instalar painéis de energia solar.',o('Instalar',{m:-400,v:700}),o('Esperar'),'Energia solar reduz a conta de luz por décadas.'),
+K('casa','l','Sua rua valorizou com uma nova estação de metrô!',o('Manter e curtir',{v:900}),o('Vender com lucro',{m:1100,v:-300}),'Valorização do bairro aumenta o patrimônio.'));
+add('eco',
+K('eco','c','Você preparou o almoço de toda a semana no domingo.',o('Guardar',{m:200}),o('Investir',{v:220}),'Planejar as refeições economiza todo mês.'),
+K('eco','c','Você renegociou o plano de internet e celular.',o('Guardar',{m:150}),o('Investir',{v:170}),'Renegociar contratos é economia garantida.'),
+K('eco','c','Você cancelou assinaturas que não usava.',o('Guardar',{m:200}),o('Investir',{v:230})),
+K('eco','r','Seu cofrinho encheu! Hora de contar as moedas.',o('Guardar tudo',{m:350}),o('Investir',{v:400}),'Moedas pequenas viram um bom valor com o tempo.'),
+K('eco','r','Mutirão de troca de roupas na vizinhança.',o('Participar',{m:200,again:1}),o('Comprar roupa nova',{m:-200}),'Trocar e reaproveitar economiza dinheiro.'),
+K('eco','l','Três meses seguidos poupando: sua disciplina rendeu!',o('Comemorar',{m:700}),o('Aumentar a meta',{m:300,v:600,shield:1}),'Disciplina vale mais que o valor guardado.'));
+add('imp',
+K('imp','c','Seu notebook quebrou em plena semana de trabalho.',o('Comprar outro',{m:-450}),o('Consertar',{m:-200})),
+K('imp','c','Chegou uma conta atrasada que você nem lembrava.',o('Pagar com multa',{m:-300}),o('Negociar o desconto',0,4,{m:-150},{m:-350}),'Contas atrasadas crescem com juros e multa.'),
+K('imp','c','Um temporal alagou parte da casa.',o('Pagar o conserto',{m:-400}),o('Acionar o seguro',{m:-100}),'Seguro residencial custa pouco perto do prejuízo.'),
+K('imp','r','Você precisa de um dentista com urgência.',o('Pagar o tratamento',{m:-300}),o('Usar o plano de saúde',{m:-100}),'Prevenção costuma sair mais barato que o tratamento.'),
+K('imp','r','O carro foi multado três vezes por estacionar errado!',o('Pagar tudo',{m:-350}),o('Recorrer',0,3,{m:-100},{m:-450}),'Multas evitáveis são dinheiro jogado fora.'),
+K('imp','l','Seu seguro cobriu tudo e ainda deu bônus por bom histórico!',o('Receber',{m:600}),o('Receber e renovar',{m:350,shield:1}),'Quem se protege dorme tranquilo.'));
+add('desp',
+K('desp','c','A academia está com plano anual em promoção.',o('Fechar o plano anual',{m:-300}),o('Ficar no mensal',{m:-100}),'Só pague plano longo se for usar de verdade.'),
+K('desp','c','Chegaram os livros escolares dos filhos.',o('Comprar novos',{m:-250}),o('Comprar usados',{m:-100}),'Livros usados são ótimos para economizar.'),
+K('desp','c','Uma festa surpresa para um amigo.',o('Gastar muito',{m:-250}),o('Fazer algo simples',{m:-100}),'Carinho não precisa de muito dinheiro.'),
+K('desp','r','O mês tem cinco finais de semana: passeios demais!',o('Gastar sem controle',{m:-300}),o('Planejar passeios grátis',{m:100}),'Lazer barato também é lazer.'),
+K('desp','r','A conta de água veio duas vezes maior.',o('Procurar um vazamento',{m:-100,v:100}),o('Pagar e ignorar',{m:-300}),'Conta fora do normal merece investigação.'),
+K('desp','l','Cupom premiado: 50% de desconto em toda a compra!',o('Aproveitar',{m:300}),o('Dividir com a família',{m:150,oth:100,shield:1}),'Cupons ajudam, mas só se a compra era necessária.'));
+add('rel',
+K('rel','c','Um colega convida você para um café sobre carreira.',o('Ir',{m:100}),o('Recusar'),'Conversas de carreira abrem oportunidades.'),
+K('rel','c','Um amigo pede uma dica de onde investir.',o('Dar a dica certa',{m:150}),o('Evitar o assunto')),
+K('rel','c','Um vizinho propõe trocar serviços: ele conserta, você ensina inglês.',o('Aceitar',{m:200}),o('Recusar'),'Troca de serviços economiza dinheiro de todos.'),
+K('rel','r','Você foi convidado para o casamento do seu sócio.',o('Ir e conhecer gente',{m:-100,again:1}),o('Mandar um presente',{m:-50}),'Eventos sociais também constroem negócios.'),
+K('rel','r','Uma amiga quer abrir um negócio e pede sua opinião.',o('Ajudar e participar',{m:-100,v:300}),o('Apenas desejar sorte',{m:50}),'Ajudar um negócio pode render sociedade.'),
+K('rel','l','Seu mentor apresenta você ao diretor de uma grande empresa!',o('Apresentar o projeto',0,3,{m:1000,v:300},{m:-100}),o('Pedir uma indicação',{m:500,shield:1}),'Boas apresentações abrem portas que o currículo não abre.'));
+add('viag',
+K('viag','c','Você pode dividir a hospedagem com amigos.',o('Dividir',{m:-100,mv:2}),o('Hotel sozinho',{m:-300,mv:2}),'Dividir custos faz a viagem caber no bolso.'),
+K('viag','c','O voo foi cancelado: e agora?',o('Pedir reembolso',{m:200}),o('Aceitar o voucher',{m:100,mv:1}),'Conheça seus direitos como passageiro.'),
+K('viag','c','Você viajou sem planejar os gastos.',o('Estourar o orçamento',{m:-350}),o('Voltar antes',{m:-100,mv:-1}),'Sem planejamento, a viagem vira dívida.'),
+K('viag','r','Uma agência oferece pacote com tudo incluído.',o('Fechar o pacote',{m:-350,mv:3}),o('Montar por conta própria',{m:-200,mv:2}),'Compare o pacote com o custo de montar tudo sozinho.'),
+K('viag','r','Cashback em viagens: parte do dinheiro voltou!',o('Receber',{m:250,mv:1}),o('Usar na próxima viagem',{mv:3}),'Cashback é um desconto que você deve usar com cuidado.'),
+K('viag','l','Seu hotel te promoveu de graça para a suíte presidencial!',o('Aproveitar',{mv:4,m:300}),o('Compartilhar com os amigos',{mv:2,m:500,oth:100}),'Boas experiências também são memórias para a vida.'));
+
+const piles={};
+const ART={mkt:'📣',ven:'🛒',est:'📊',neg:'🤝',cli:'🎯',des:'🎲',trab:'💼',dec:'🤔',cred:'💳',inv:'📈',sorte:'🍀',casa:'🏠',eco:'🐷',imp:'⚠️',desp:'🛍️',rel:'👥',viag:'✈️'};
+function draw(k){if(!piles[k]||!piles[k].length){const a=[...D[k]];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}piles[k]=a}return piles[k].pop()}
+const money=n=>'R$ '+Math.abs(n).toLocaleString('pt-BR');
+function fxText(f){const a=[];
+ if(f.duel)return '⚔️ vence: +R$ 300 e +1 venda · perde: −R$ 150';
+ if(f.m)a.push((f.m>0?'+':'−')+money(f.m));
+ if(f.s)a.push('+'+f.s+' venda'+(f.s>1?'s':''));
+ if(f.v)a.push((f.v>0?'+':'−')+money(f.v)+' em patrimônio');
+ if(f.mv)a.push((f.mv>0?'avance ':'volte ')+Math.abs(f.mv)+' casa'+(Math.abs(f.mv)>1?'s':''));
+ if(f.every)a.push('TODOS '+(f.every>0?'+':'−')+money(f.every));
+ if(f.swap)a.push('🔄 troca de dinheiro com o líder');
+ if(f.again)a.push('joga o dado de novo');
+ if(f.oth)a.push('rivais '+(f.oth>0?'+':'−')+money(f.oth));
+ if(f.steal)a.push('rouba '+money(f.steal)+' do líder');
+ if(f.shield)a.push('ganha 🛡️');
+ if(f.skip)a.push('perde a próxima vez');
+ return a.join(' · ')||'sem efeito'}
+function optText(op){if(!op.r)return fxText(op.fx);return '🎲 dado '+op.r.th+'+ → '+fxText(op.r.ok)+' | senão → '+fxText(op.r.no)}
+
+/* ---------- JOGO ---------- */
+const R0='10px',RT='10px 64px 10px 10px',RB='10px 10px 10px 64px',RBR='10px 10px 64px 10px';
+const ICON={start:'M4 12h15 M13 6l6 6-6 6',mkt:'M3 10v4h3l7 4V6L6 10H3z M6 14l1 5h3 M16 9a4 4 0 010 6 M18.5 6.5a8 8 0 010 11',des:'M9 9a3 3 0 116 0c0 2-3 2.5-3 4.5 M12 17.5v.5',est:'M4 20v-7 M10 20V9 M16 20V5 M3 20h18',neg:'M2 11l4.5-4.5 5 1.5 3-1.5 5.5 1.5L22 11 M2 11l7 7c1 1 2.5 1 3.5 0 M22 11l-7 7c-1 1-2.5 1-3.5 0 M9 12.5l2.5 2.5 M12 10.5l3.5 3.5',ven:'M3 4h3l2.5 11h9.5l2-8H7 M10 20h.01 M17 20h.01',cli:'M12 3a9 9 0 100 18 9 9 0 000-18z M12 8a4 4 0 100 8 4 4 0 000-8z M12 12l7-7 M16 5h3v3',
+trab:'M3 8h18v12H3z M9 8V5h6v3 M3 13h18',dec:'M9 9a3 3 0 116 0c0 2-3 2.5-3 4.5 M12 17.5v.5',cred:'M3 6h18v12H3z M3 10h18 M6 15h4',inv:'M4 20v-7 M10 20V9 M16 20V5 M3 20h18',sorte:'M5.8 9a3.2 3.2 0 106.4 0 3.2 3.2 0 10-6.4 0 M11.8 9a3.2 3.2 0 106.4 0 3.2 3.2 0 10-6.4 0 M5.8 15a3.2 3.2 0 106.4 0 3.2 3.2 0 10-6.4 0 M11.8 15a3.2 3.2 0 106.4 0 3.2 3.2 0 10-6.4 0 M12 12l4 8',casa:'M3 11l9-8 9 8 M5 10v10h14V10 M10 20v-6h4v6',eco:'M5 7a7 3 0 1014 0 7 3 0 10-14 0 M5 7v5a7 3 0 0014 0V7 M5 12v5a7 3 0 0014 0v-5',imp:'M12 3l10 18H2z M12 10v5 M12 18h.01',desp:'M3 4h3l2.5 11h9.5l2-8H7 M10 20h.01 M17 20h.01',rel:'M9 11a3 3 0 100-6 3 3 0 000 6z M3 20c0-3.5 2.5-6 6-6s6 2.5 6 6 M16 5a3 3 0 010 6 M18 14c2 .8 3 3 3 6',viag:'M3 13l18-9-5 17-4-7-9-1z M12 14l4-5'};
+const VIS={ // cor, texto, rótulo, descrição
+start:['#15803d','#fff','Início','Ao passar: +R$ 200. Parar numa casa Início = descanso.'],
+mkt:['#2563eb','#fff','Marketing','Campanhas, marca e redes sociais.'],des:['#d64e0c','#fff','Desafio','Prazos, crises e problemas do dia a dia.'],est:['#7c3aed','#fff','Estratégia','Planos, metas e decisões de rumo.'],neg:['#dc2626','#fff','Negociação','Propostas, contratos e duelos.'],ven:['#facc15','#111827','Vendas','Clientes quentes e fechamentos.'],cli:['#1d4ed8','#fff','Cliente','Relacionamento e fidelização.'],
+trab:['#2563eb','#fff','Trabalho e Renda','Salário, extras e carreira.'],dec:['#facc15','#111827','Decisão','Escolhas que mudam o seu jogo.'],cred:['#dc2626','#fff','Cartão de Crédito','Compras, parcelas e juros.'],inv:['#7c3aed','#fff','Investimentos','Rendimento, risco e patrimônio.'],sorte:['#15803d','#fff','Sorte','Surpresas boas (e algumas nem tanto).'],casa:['#1d4ed8','#fff','Casa Própria','Imóvel, reforma e financiamento.'],eco:['#d64e0c','#fff','Economia','Poupar, reserva e cortar gastos.'],imp:['#dc2626','#fff','Imprevisto','Emergências que custam caro.'],desp:['#dc2626','#fff','Despesas','Contas e gastos do mês.'],rel:['#2563eb','#fff','Relacionamento','Família, amigos e dinheiro.'],viag:['#d64e0c','#fff','Viagem','Lazer e experiências.']};
+const L=(k,r,c,rs,cs,rad)=>[k,r,c,rs||1,cs||1,rad||R0];
+const LAY={
+mkt:[L('start',1,1),L('mkt',1,2),L('des',1,3),L('est',1,4),L('neg',1,5),L('ven',1,6),L('cli',1,7,1,1,RT),L('est',2,7),L('neg',3,7),L('ven',4,7),L('cli',5,7),L('start',6,7),L('mkt',6,6),L('des',6,5),L('est',6,4),L('neg',6,3),L('ven',6,2),L('cli',5,1,2,1,RB),L('ven',2,1),L('neg',3,1),L('est',4,1)],
+fin:[L('start',1,1),L('trab',1,2),L('dec',1,3),L('cred',1,4),L('inv',1,5),L('sorte',1,6),L('casa',1,7,1,2,RT),L('eco',2,8),L('imp',3,8),L('dec',4,8),L('inv',5,8),L('sorte',6,8,1,1,RBR),L('trab',6,7),L('dec',6,6),L('inv',6,5),L('viag',6,4),L('desp',6,3),L('sorte',6,2),L('rel',6,1,1,1,RB),L('dec',2,1),L('inv',3,1),L('desp',4,1),L('sorte',5,1)]};
+// mkt: a coluna 1 tem Cliente ocupando 2 linhas (5-6); a ordem do anel segue o tabuleiro impresso
+const BART={
+mkt:`<svg viewBox="0 0 420 190"><rect x="10" y="124" width="44" height="46" fill="#ea580c"/><rect x="74" y="90" width="44" height="80" fill="#16a34a"/><rect x="138" y="60" width="44" height="110" fill="#fbbf24"/><rect x="202" y="30" width="44" height="140" fill="#64748b"/><path d="M4 172H252" fill="none" stroke="#c7d0e0" stroke-width="3" stroke-linecap="round"/><circle cx="330" cy="100" r="80" fill="#dc2626"/><circle cx="330" cy="100" r="60" fill="#0f1a2e"/><circle cx="330" cy="100" r="42" fill="#dc2626"/><circle cx="330" cy="100" r="22" fill="#0f1a2e"/><path d="M330 100L398 32M372 30H400V58" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+fin:`<svg viewBox="0 0 420 190"><g fill="#fbbf24" stroke="#fff" stroke-width="2"><ellipse cx="40" cy="174" rx="34" ry="11"/><ellipse cx="40" cy="156" rx="34" ry="11"/><ellipse cx="40" cy="138" rx="34" ry="11"/><ellipse cx="108" cy="174" rx="34" ry="11"/><ellipse cx="108" cy="156" rx="34" ry="11"/><ellipse cx="108" cy="138" rx="34" ry="11"/><ellipse cx="108" cy="120" rx="34" ry="11"/><ellipse cx="108" cy="102" rx="34" ry="11"/></g><path d="M176 176V108" stroke="#16a34a" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M176 126C148 126 138 98 152 78 182 82 192 106 176 126Z" fill="#22c55e"/><path d="M178 110C200 110 216 90 208 66 184 70 170 90 178 110Z" fill="#16a34a"/><rect x="250" y="124" width="30" height="48" fill="#16a34a"/><rect x="288" y="96" width="30" height="76" fill="#22c55e"/><rect x="326" y="66" width="30" height="106" fill="#16a34a"/><path d="M240 96L290 58 312 72 372 18M350 18H374V42" fill="none" stroke="#fbbf24" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 176H370" stroke="#c7d0e0" stroke-width="3" stroke-linecap="round" fill="none"/></svg>`};
 const G={
-mkt:{n:'Marketing & Vendas',ic:'📣',start:2000,dice:1,tiles:mk('start,mkt,des,est,neg,ven,cli,mkt,est,neg,ven,cli,start,mkt,des,est,neg,ven,cli,des,est,neg,ven,des'),dk:{start:0},sc:'🛒'},
-fin:{n:'Finanças & Decisão',ic:'💰',start:3000,dice:2,tiles:mk('start,trab,dec,cred,inv,sorte,casa,eco,imp,dec,inv,sorte,rel,sorte,desp,viag,inv,dec,trab,desp,sorte,inv,desp,dec'),sc:'📈'}};
-G.mkt.tiles=G.mkt.tiles.map(x=>x=='des'?'des':x);
-let sel='mkt',np=3,cfg,P,turn,busy;
-document.querySelectorAll('.gc').forEach(b=>b.onclick=()=>{sel=b.dataset.g;document.querySelectorAll('.gc').forEach(x=>x.classList.toggle('sel',x==b))});
+mkt:{n:'Marketing & Vendas',ic:'📣',start:2000,dice:1,shield:'Gestão de crise',cols:7,notes:['ESTRATÉGIA\nÉ O QUE\nTRANSFORMA\nPLANOS EM\nVENDAS!','IDEIAS\n+\nPLANO\n+\nAÇÃO\n=\nRESULTADOS'],title:['MARKETING','& VENDAS'],tag:'O JOGO DAS GRANDES CONQUISTAS',score:'dinheiro + vendas × R$ 100'},
+fin:{n:'Finanças & Decisão',ic:'💰',start:3000,dice:2,shield:'Reserva de emergência',cols:8,notes:['ADMINISTRE\nSEU DINHEIRO,\nCONSTRUA\nSEUS SONHOS!','INVESTIR\nTAMBÉM É\nUMA FORMA\nDE PLANEJAR\nO FUTURO!'],title:['FINANÇAS &','DECISÃO'],tag:'GRANDES ESCOLHAS, GRANDES RESULTADOS.',score:'dinheiro + patrimônio'}};
+for(const k in G){G[k].lay=LAY[k];G[k].tiles=LAY[k].map(x=>x[0])}
+function buildBoard(){
+ const b=$('#board');b.querySelectorAll('.tile').forEach(e=>e.remove());
+ b.style.gridTemplateColumns=`repeat(${cfg.cols},minmax(0,1fr))`;b.style.gridTemplateRows='repeat(6,minmax(0,1fr))';
+ $('#center').className='center'+(cfg.cols==8?' f':'');
+ cfg.lay.forEach(([k,r,c,rs,cs,rad],i)=>{const v=VIS[k],d=document.createElement('div');d.className='tile';d.id='t'+i;
+  d.style.cssText=`background:linear-gradient(160deg,${v[0]},${v[0]}dd);color:${v[1]};grid-area:${r}/${c}/${r+rs}/${c+cs};border-radius:${rad}`;
+  d.innerHTML=`<svg viewBox="0 0 24 24"><path d="${ICON[k]}"/></svg><b>${v[2]}</b><div class="pw"></div>`;b.appendChild(d)});
+ const gk=cfg==G.mkt?'mkt':'fin';
+ $('#cmid').innerHTML=`<div class="cnote l">${cfg.notes[0]}</div><div class="cart">${BART[gk]}<div class="ttl">${cfg.title[0]}<br><em>${cfg.title[1]}</em></div><div class="tag">${cfg.tag}</div></div><div class="cnote r">${cfg.notes[1]}</div>`}
+function rulesHtml(){const mk=cfg==G.mkt,kinds=[...new Set(cfg.tiles)];
+ return `<div class="card r-l"><div class="ch" style="background:#fbbf24;color:#000"><span>📖 Como jogar</span><span class="rb">${cfg.ic} ${cfg.n}</span></div><div class="cb rules">
+ <h3>🎯 Objetivo</h3><p>Dê <b>2 voltas</b> no tabuleiro tomando boas decisões. Quem tiver a maior pontuação no fim vence: <b>${cfg.score}</b>.</p>
+ <h3>🎲 Sua vez</h3><ul><li>Cada jogador começa com <b>R$ ${cfg.start.toLocaleString('pt-BR')}</b>.</li><li>Jogue ${mk?'<b>1 dado</b>':'<b>2 dados</b> (some os valores)'} e ande as casas.</li><li>Ao parar numa casa colorida, você puxa uma <b>carta</b> daquele baralho e escolhe a opção <b>A</b> ou <b>B</b>.</li><li>Ao passar pelo <b>Início</b>: <b>+R$ 200</b>${mk?'':' e o patrimônio rende <b>+10%</b>'}.</li></ul>
+ <h3>🃏 Cartas</h3><ul><li><b>Comum</b>, <b>🔷 Rara</b> e <b>⭐ Lendária</b>: quanto mais rara, maiores os ganhos (e as surpresas).</li><li><b>🎲 Dado 4+</b>: opção de risco. Tire o valor pedido ou mais para acertar, senão sofre a consequência.</li><li><b>🛡️ ${cfg.shield}</b>: protege você da próxima perda.</li><li><b>🔥 Combo</b>: 3 resultados positivos seguidos = <b>+R$ 200</b>.</li><li><b>⚔️ Duelo</b>, <b>🌍 Crise</b> (afeta todos), <b>🔄 Virada</b> (rouba ou troca com o líder), <b>🎲 Jogue de novo</b> e <b>⏸️ Perde a vez</b> podem aparecer.</li><li>Cada baralho tem 15 cartas e só se repete depois de todas saírem.</li></ul>
+ <h3>🧭 As casas</h3><div class="tl">${kinds.map(k=>`<div><i style="background:${VIS[k][0]}"></i><span><b>${VIS[k][2]}</b><br>${VIS[k][3]}</span></div>`).join('')}</div>
+ <h3>🏆 Fim de jogo</h3><p>O jogo acaba quando todos completam as 2 voltas. Todos jogam no mesmo aparelho, passando a vez.</p>
+ <button class="btn" id="rok" style="width:100%;margin-top:12px"></button></div></div>`}
+function showRules(cb){$('#mb').className='mb wide';$('#mb').innerHTML=rulesHtml();const b=$('#rok');b.textContent=cb?'Entendi, vamos jogar! 🎲':'Fechar';
+ b.onclick=()=>{$('#modal').style.display='none';$('#mb').className='mb';if(cb)cb()};$('#modal').style.display='flex'}
+let sel='mkt',np=3,cfg,P,turn,busy,logs=[];
+document.querySelectorAll('.gc2').forEach(b=>b.onclick=()=>{sel=b.dataset.g;document.querySelectorAll('.gc2').forEach(x=>x.classList.toggle('sel',x==b))});
 document.querySelectorAll('.pill').forEach(b=>b.onclick=()=>{np=+b.dataset.n;document.querySelectorAll('.pill').forEach(x=>x.classList.toggle('sel',x==b))});
-$('#go').onclick=()=>{cfg=G[sel];P=Array.from({length:np},(_,i)=>({n:'Jogador '+(i+1),c:COL[i],pos:0,lap:0,m:cfg.start,s:0,v:0,done:0}));turn=0;busy=0;
- $('#menu').style.display='none';$('#game').style.display='block';$('#gt').textContent=cfg.ic+' '+cfg.n;$('#ct').textContent=cfg.n;
- document.querySelectorAll('.tile').forEach(e=>e.remove());
- const pos=[];for(let c=0;c<8;c++)pos.push([1,c]);for(let r=1;r<6;r++)pos.push([r,7]);for(let c=6;c>=0;c--)pos.push([5,c]);for(let r=4;r>=1;r--)pos.push([r,0]);
- cfg.tiles.forEach((k,i)=>{const t=T[k],d=document.createElement('div');d.className='tile'+(t[4]?' y':'');d.id='t'+i;d.style.background=t[0];d.style.gridArea=(pos[i][0]+1)+'/'+(pos[i][1]+1);d.innerHTML='<i>'+t[1]+'</i>'+t[2]+'<div class="pw"></div>';$('#board').appendChild(d)});
- render();say('Vez de '+P[0].n+'. Role o dado!');$('#roll').disabled=false};
+$('#go').onclick=()=>{cfg=G[sel];showRules(start)};
+function start(){for(const k in piles)delete piles[k];logs=[];
+ P=Array.from({length:np},(_,i)=>({n:'Jogador '+(i+1),c:COL[i],pos:0,lap:0,m:cfg.start,s:0,v:0,done:0,sh:0,st:0,skip:0}));turn=0;busy=0;
+ $('#menu').style.display='none';$('#game').style.display='block';$('#gt').textContent=cfg.ic+' '+cfg.n;
+ buildBoard();
+ render();log('Jogo começou! Cada jogador tem '+money(cfg.start)+'.');say('Vez de '+P[0].n+'. Role o dado!');$('#roll').disabled=false;$('#dice').textContent='🎲'}
+$('#rl').onclick=()=>showRules();
 $('#back').onclick=()=>{$('#game').style.display='none';$('#menu').style.display='block'};
 const score=p=>p.m+p.v+p.s*100;
 function say(t){$('#st').textContent=t}
+function log(t){logs.unshift(t);logs.length=Math.min(logs.length,6);$('#log').innerHTML=logs.map(x=>'<div>'+x+'</div>').join('')}
 function render(){
- $('#score').innerHTML=P.map((p,i)=>`<div class="pl ${i==turn?'on':''}"><b><span class="dot" style="background:${p.c}"></span>${p.n}${p.done?' 🏁':''}</b>💰 R$ ${p.m.toLocaleString('pt-BR')}<br>${cfg.sc} ${cfg==G.mkt?p.s+' vendas':'R$ '+p.v.toLocaleString('pt-BR')}<br>🔁 Volta ${Math.min(p.lap+1,LAPS)}/${LAPS}</div>`).join('');
+ $('#score').innerHTML=P.map((p,i)=>`<div class="pl ${i==turn?'on':''}"><b><span class="dot" style="background:${p.c}"></span>${p.n}${p.done?' 🏁':''}</b>💰 ${money(p.m)}<br>${cfg==G.mkt?'🛒 '+p.s+' vendas':'📈 '+money(p.v)}<br>🔁 Volta ${Math.min(p.lap+1,LAPS)}/${LAPS}${p.sh?' · 🛡️×'+p.sh:''} · 🔥${p.st}/3${p.skip?' · ⏸️':''}</div>`).join('');
  document.querySelectorAll('.pw').forEach(e=>e.innerHTML='');
- P.forEach(p=>{$('#t'+p.pos+' .pw').innerHTML+=`<span style="background:${p.c}"></span>`});}
+ P.forEach((p,i)=>{$('#t'+p.pos+' .pw').innerHTML+=`<span style="background:${p.c}">${i+1}</span>`});
+ document.querySelectorAll('.tile').forEach(t=>t.classList.remove('cur'));if(P[turn])$('#t'+P[turn].pos).classList.add('cur')}
+function passStart(p,msgs){p.lap++;p.m+=200;const g=Math.round(p.v*.1);p.v+=g;
+ msgs.push('🏁 '+p.n+' passou pelo início: +R$ 200'+(g?' e o patrimônio rendeu +R$ '+g:''));
+ if(p.lap>=LAPS){p.done=1;return true}return false}
+function moveBy(p,n,msgs){for(let i=0;i<n;i++){p.pos=(p.pos+1)%cfg.tiles.length;if(p.pos==0&&passStart(p,msgs))return true}return false}
+function applyFx(p,f,msgs){
+ let m=f.m||0,v=f.v||0,s=f.s||0;
+ if(m+v+s*100<0&&p.sh>0){p.sh--;m=Math.max(m,0);v=Math.max(v,0);s=Math.max(s,0);msgs.push('🛡️ '+cfg.shield+' protegeu você da perda!')}
+ const net=m+v+s*100;
+ p.m=Math.max(0,p.m+m);p.v=Math.max(0,p.v+v);p.s+=s;
+ if(m)msgs.push((m>0?'💰 +':'💸 −')+money(m));
+ if(s)msgs.push('🛒 +'+s+' venda'+(s>1?'s':''));
+ if(v)msgs.push((v>0?'📈 +':'📉 −')+money(v)+' em patrimônio');
+ if(f.oth){P.forEach(q=>{if(q!==p)q.m=Math.max(0,q.m+f.oth)});msgs.push('👥 Rivais '+(f.oth>0?'ganham ':'perdem ')+money(f.oth))}
+ if(f.steal){const r=P.filter(q=>q!==p).sort((a,b)=>b.m-a.m)[0];if(r){const a=Math.min(f.steal,r.m);r.m-=a;p.m+=a;msgs.push('🕵️ Você tomou '+money(a)+' de '+r.n)}}
+ if(f.shield){p.sh++;msgs.push('🛡️ Você ganhou '+cfg.shield)}
+ if(f.skip){p.skip=1;msgs.push('⏸️ Você perde a próxima vez')}
+ if(f.every){P.forEach(q=>{if(f.every<0&&q.sh>0){q.sh--;msgs.push('🛡️ '+q.n+' se protegeu da crise!')}else{q.m=Math.max(0,q.m+f.every)}});msgs.push('🌍 Todos '+(f.every>0?'ganham ':'perdem ')+money(f.every)+' (quem tinha 🛡️ escapou)')}
+ if(f.swap){const r=P.filter(q=>q!==p).sort((a,b)=>b.m-a.m)[0];if(r&&r.m>p.m){const t=p.m;p.m=r.m;r.m=t;msgs.push('🔄 VIRADA! Você trocou de dinheiro com '+r.n)}else msgs.push('👑 Você já é o líder: nada a trocar')}
+ if(f.again){p.again=1;msgs.push('🎲 Você joga o dado de novo!')}
+ if(f.mv){if(f.mv>0){msgs.push('🏃 Avance '+f.mv+' casa'+(f.mv>1?'s':''));moveBy(p,f.mv,msgs)}else{p.pos=(p.pos+cfg.tiles.length+f.mv)%cfg.tiles.length;msgs.push('↩️ Volte '+(-f.mv)+' casa'+(f.mv<-1?'s':''))}}
+ if(net>0){p.st++;if(p.st>=3){p.st=0;p.m+=200;msgs.push('🔥 COMBO de 3 acertos! +R$ 200')}}else if(net<0)p.st=0;
+ return net}
+async function rollIn(el,sides){for(let i=0;i<8;i++){el.textContent=FACES[rnd(6)-1];await sleep(80)}const d=rnd(sides);el.textContent=FACES[d-1];await sleep(350);return d}
+async function playCard(p,k){
+ const card=draw(k),t=T[k],mb=$('#mb');
+ mb.innerHTML=`<div class="card r-${card.r}"><div class="ch" style="background:${t[0]};color:${t[4]?'#000':'#fff'}"><span>${t[1]} ${t[2]}</span><span class="rb">${RAR[card.r]}</span></div><div class="art" style="background:radial-gradient(circle at 50% 40%,${t[0]}cc,${t[0]}22 70%),#0d1117"><span>${ART[k]||t[1]}</span><div class="gems">${card.r=='l'?'★★★':card.r=='r'?'◆◆':'●'}</div></div><div class="cb"><div class="who"><span class="dot" style="background:${p.c}"></span>${p.n} comprou uma carta</div><p class="sit">${card.t}</p><div id="opts"></div><div id="res"></div></div></div>`;
+ $('#modal').style.display='flex';
+ const op=await new Promise(res=>card.o.forEach((x,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=`<b>${'AB'[i]} · ${x.l}</b><small>${optText(x)}</small>`;b.onclick=()=>res(x);$('#opts').appendChild(b)}));
+ $('#opts').innerHTML=`<div class="chosen">Você escolheu: ${op.l}</div>`;
+ const msgs=[];let fx=op.fx;
+ if(op.fx.duel){const rv=P.filter(q=>q!==p&&!q.done)[0]||P.find(q=>q!==p);
+  $('#res').innerHTML='<div class="rdie" id="d1">🎲</div><div class="rdie" id="d2">🎲</div>';
+  const a=await rollIn($('#d1'),6),b=await rollIn($('#d2'),6);
+  msgs.push('⚔️ '+p.n+' tirou '+a+' · '+rv.n+' tirou '+b);
+  if(a>b){fx={m:300,s:1};msgs.push('🏆 Você venceu o duelo!')}else if(a<b){fx={m:-150};rv.m+=150;msgs.push('😬 '+rv.n+' venceu e ganhou R$ 150')}else{fx={};msgs.push('🤝 Empate!')}}
+ else if(op.r){$('#res').innerHTML='<div class="rdie" id="d1">🎲</div>';
+  const d=await rollIn($('#d1'),6);const ok=d>=op.r.th;fx=ok?op.r.ok:op.r.no;msgs.push(ok?'🎉 Deu '+d+': acertou!':'💥 Deu '+d+': não foi dessa vez.')}
+ applyFx(p,fx,msgs);render();
+ log(p.n+' ('+t[2]+'): '+op.l+' → '+fxText(fx));
+ $('#res').innerHTML='<div class="msgs">'+msgs.map(x=>'<div>'+x+'</div>').join('')+'</div>'+(card.tip?'<div class="tip">💡 '+card.tip+'</div>':'')+'<button class="btn" id="ok">Continuar</button>';
+ await new Promise(r=>$('#ok').onclick=r);
+ $('#modal').style.display='none'}
 $('#roll').onclick=async()=>{
  if(busy)return;busy=1;$('#roll').disabled=true;const p=P[turn],dc=$('#dice');
  dc.classList.add('roll');await sleep(700);dc.classList.remove('roll');
- const ds=Array.from({length:cfg.dice},()=>1+Math.floor(Math.random()*6)),tot=ds.reduce((a,b)=>a+b);
+ const ds=Array.from({length:cfg.dice},()=>rnd(6)),tot=ds.reduce((a,b)=>a+b);
  dc.textContent=ds.map(d=>FACES[d-1]).join(' ');say(p.n+' tirou '+tot+'!');
- for(let i=0;i<tot;i++){await sleep(260);p.pos=(p.pos+1)%24;
-  if(p.pos==0){p.lap++;const g=Math.round(p.v*.1);p.m+=200;p.v+=g;say('Passou pelo início: +R$ 200'+(g?' e seu patrimônio rendeu +R$ '+g:''));
-   if(p.lap>=LAPS){p.done=1;render();await sleep(700);return next()}}
+ for(let i=0;i<tot;i++){await sleep(260);p.pos=(p.pos+1)%cfg.tiles.length;
+  if(p.pos==0){const m=[];const fin=passStart(p,m);say(m[0]);log(m[0]);if(fin){render();await sleep(700);return next()}}
   render()}
- await sleep(300);land(p)};
-function land(p){const k=cfg.tiles[p.pos];if(k=='start'){say('Casa de descanso. 😌');return next()}
- const t=T[k],card=D[k][Math.floor(Math.random()*D[k].length)];
- $('#mb').style.borderTopColor=t[0];
- $('#mb').innerHTML=`<h2>${t[1]} ${t[2]} · ${p.n}</h2><p>${card.t}</p>`;
- card.o.forEach(o=>{const b=document.createElement('button');b.textContent=o[0];b.onclick=()=>{$('#modal').style.display='none';apply(p,o)};$('#mb').appendChild(b)});
- $('#modal').style.display='flex'}
-async function apply(p,o){let[,m,s,v,r]=o;if(r&&Math.random()>r[0]){m=r[1];s=0;v=0;say('😬 Deu errado! '+(m<0?'-R$ '+(-m):'Nada ganhou'))}else say((m>=0?'✅ +':'💸 -')+'R$ '+Math.abs(m)+(s?' e +'+s+' venda(s)':''));
- p.m=Math.max(0,p.m+m);if(cfg==G.mkt)p.s+=s;else p.v=Math.max(0,p.v+v);render();await sleep(1400);next()}
-function next(){render();
+ await sleep(300);
+ const k=cfg.tiles[p.pos];
+ if(k=='start'){say('Casa de descanso. 😌');log(p.n+' descansou no início.');return next()}
+ await playCard(p,k);render();
+ if(p.lap>=LAPS)p.done=1;
+ next()};
+async function next(){render();
  if(P.every(p=>p.done)){const r=[...P].sort((a,b)=>score(b)-score(a));
-  $('#mb').style.borderTopColor='#fbbf24';$('#mb').innerHTML='<h2>🏆 Fim de jogo</h2><p><b>'+r[0].n+' venceu!</b></p>'+r.map((p,i)=>`<div style="padding:4px 0">${['🥇','🥈','🥉','4º'][i]} ${p.n}: R$ ${score(p).toLocaleString('pt-BR')}</div>`).join('')+'<button onclick="location.reload()">Jogar de novo</button>';
+  $('#mb').innerHTML='<div class="card r-l"><div class="ch" style="background:#fbbf24;color:#000"><span>🏆 Fim de jogo</span></div><div class="cb"><p class="sit">'+r[0].n+' venceu!</p>'+r.map((p,i)=>`<div style="padding:4px 0">${['🥇','🥈','🥉','4º'][i]} ${p.n}: ${money(score(p))} <span style="color:var(--mu);font-size:13px">(dinheiro ${money(p.m)}${cfg==G.mkt?' + '+p.s+' vendas':' + patrimônio '+money(p.v)})</span></div>`).join('')+'<button class="btn" style="width:100%;margin-top:14px" onclick="location.reload()">Jogar de novo</button></div></div>';
   $('#modal').style.display='flex';return}
+ if(P[turn].again&&!P[turn].done){P[turn].again=0;render();say(P[turn].n+' joga de novo! 🎲');busy=0;$('#roll').disabled=false;return}
+ P.forEach(q=>q.again=0);
  do{turn=(turn+1)%P.length}while(P[turn].done);
+ if(P[turn].skip){P[turn].skip=0;log('⏸️ '+P[turn].n+' perdeu a vez.');say(P[turn].n+' perdeu a vez!');render();await sleep(1200);return next()}
  render();say('Vez de '+P[turn].n+'. Role o dado!');busy=0;$('#roll').disabled=false}
 </script></body></html>
