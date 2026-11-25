@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jogos de Tabuleiro: Marketing &amp; Vendas | Finanças &amp; Decisão</title>
+<style>
+:root{color-scheme:dark;--bg:#0d1117;--card:#161b22;--tx:#f0f3f6;--y:#fbbf24;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+h1,h2{margin:0}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+.hero{text-align:center;padding:24px 0 8px}
+.hero h1{font-size:clamp(26px,6vw,44px);font-weight:900}
+.hero h1 span{color:var(--y)}
+.hero p{opacity:.7}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0}
+.gc{border:2px solid #30363d;background:var(--card);border-radius:16px;padding:20px;cursor:pointer;text-align:left;color:var(--tx);font:inherit;transition:.2s}
+.gc:hover,.gc.sel{border-color:var(--y);transform:translateY(-3px)}
+.gc .ic{font-size:44px}
+.gc h2{font-size:24px;margin:6px 0}
+.gc small{opacity:.7;display:block;line-height:1.4}
+.row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.pill{border:2px solid #30363d;background:var(--card);color:var(--tx);border-radius:999px;padding:8px 18px;font-weight:700;cursor:pointer;font-size:16px}
+.pill.sel{background:var(--y);color:#000;border-color:var(--y)}
+.btn{background:var(--y);color:#000;border:0;border-radius:12px;padding:12px 26px;font-size:18px;font-weight:900;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.ghost{background:#30363d;color:var(--tx);font-size:14px;padding:8px 14px}
+#game{display:none}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.bar h2{font-size:clamp(16px,4vw,24px)}
+#score{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:10px}
+.pl{background:var(--card);border:2px solid #30363d;border-radius:12px;padding:8px 10px;font-size:13px;line-height:1.5}
+.pl.on{border-color:var(--y);box-shadow:0 0 14px #fbbf2455}
+.pl b{display:flex;align-items:center;gap:6px;font-size:14px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(6,1fr);gap:4px;aspect-ratio:4/3;width:100%;background:#010409;padding:6px;border-radius:14px;border:1px solid #30363d}
+.tile{border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:clamp(7px,1.6vw,12px);font-weight:800;text-align:center;position:relative;text-transform:uppercase;line-height:1.1;padding:2px;color:#fff;min-width:0}
+.tile i{font-style:normal;font-size:clamp(12px,3vw,26px)}
+.tile.y{color:#000}
+.pw{position:absolute;bottom:1px;display:flex;gap:1px;flex-wrap:wrap;justify-content:center}
+.pw span{width:clamp(8px,1.8vw,16px);height:clamp(8px,1.8vw,16px);border-radius:50%;border:2px solid #fff;box-shadow:0 0 6px #000}
+.center{grid-area:2/2/6/8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:6px;background:radial-gradient(circle,#161b22,#0d1117);border-radius:10px}
+.center h3{margin:0;font-size:clamp(14px,3.5vw,30px);color:var(--y)}
+#dice{font-size:clamp(34px,8vw,64px);letter-spacing:6px;line-height:1}
+#dice.roll{animation:sh .15s infinite}
+@keyframes sh{50%{transform:rotate(18deg) scale(1.1)}}
+#st{font-size:clamp(11px,2.2vw,15px);opacity:.9;min-height:2.6em}
+.center .btn{padding:8px 18px;font-size:clamp(13px,3vw,18px)}
+#modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
+.mb{background:var(--card);border-radius:18px;padding:22px;max-width:420px;width:100%;border-top:8px solid var(--y);animation:pop .25s}
+@keyframes pop{from{transform:scale(.8);opacity:0}}
+.mb h2{font-size:14px;text-transform:uppercase;letter-spacing:1px;opacity:.8}
+.mb p{font-size:18px;line-height:1.4;margin:10px 0 16px}
+.mb button{display:block;width:100%;margin-top:8px;padding:12px;border-radius:10px;border:0;font-weight:800;font-size:15px;cursor:pointer;background:#30363d;color:var(--tx)}
+.mb button:hover{background:var(--y);color:#000}
+</style></head><body>
+<div class="wrap">
+<div id="menu">
+ <div class="hero"><h1>🎲 Jogos de <span>Tabuleiro</span></h1><p>Escolha o jogo, os jogadores e bora! (todos jogam no mesmo aparelho, passando a vez)</p></div>
+ <div class="games">
+  <button class="gc sel" data-g="mkt"><div class="ic">📣</div><h2>Marketing &amp; Vendas</h2><small>Planejar · Estrategizar · Conquistar. Feche vendas, negocie e conquiste clientes.</small></button>
+  <button class="gc" data-g="fin"><div class="ic">💰</div><h2>Finanças &amp; Decisão</h2><small>Planeje · Invista · Conquiste. Faça escolhas e construa seu patrimônio.</small></button>
+ </div>
+ <div class="row"><span>Jogadores:</span><button class="pill" data-n="2">2</button><button class="pill sel" data-n="3">3</button><button class="pill" data-n="4">4</button></div>
+ <div class="row"><button class="btn" id="go">Começar jogo 🚀</button></div>
+ <p style="text-align:center;opacity:.6;font-size:13px">Cada jogador dá 2 voltas no tabuleiro. Vence quem tiver o maior total no final.</p>
+</div>
+<div id="game">
+ <div class="bar"><h2 id="gt"></h2><button class="btn ghost" id="back">← Menu</button></div>
+ <div id="score"></div>
+ <div class="board" id="board"><div class="center"><h3 id="ct"></h3><div id="dice">🎲</div><div id="st"></div><button class="btn" id="roll">Jogar dado</button></div></div>
+</div>
+</div>
+<div id="modal"><div class="mb" id="mb"></div></div>
+<script>
+const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const COL=['#ef4444','#3b82f6','#22c55e','#eab308'],LAPS=2,FACES='⚀⚁⚂⚃⚄⚅';
+const c=(t,...o)=>({t,o});
+const ok=(l,m,s,v,r)=>[l,m||0,s||0,v||0,r];
+const T={ // tipo: [cor, emoji, rótulo, deck, texto escuro]
+start:['#16a34a','➡️','Início'],
+mkt:['#2563eb','📣','Marketing'],des:['#ea580c','❓','Desafio'],est:['#7c3aed','📊','Estratégia'],neg:['#dc2626','🤝','Negociação'],ven:['#eab308','🛒','Vendas',0,1],cli:['#1d4ed8','🎯','Cliente'],
+trab:['#2563eb','💼','Trabalho e Renda'],dec:['#eab308','❓','Decisão',0,1],cred:['#dc2626','💳','Cartão'],inv:['#7c3aed','📈','Investimentos'],sorte:['#16a34a','🍀','Sorte'],casa:['#1d4ed8','🏠','Casa Própria'],eco:['#ea580c','🐷','Economia'],imp:['#dc2626','⚠️','Imprevisto'],desp:['#dc2626','🛍️','Despesas'],rel:['#2563eb','👥','Relaciona-mento'],viag:['#ea580c','✈️','Viagem']};
+const D={
+mkt:[c('Sua campanha nas redes viralizou!',ok('Comemorar',300,1)),c('Influenciador propõe parceria.',ok('Pagar R$ 400',-400,2),ok('Recusar')),c('Novo branding da empresa.',ok('Investir R$ 200 (risco)',500,1,0,[.5,-200]),ok('Manter o logo'))],
+ven:[c('Você fechou um grande contrato!',ok('Receber R$ 500',500,1)),c('Cliente pede desconto para fechar.',ok('Dar desconto',200,1),ok('Manter preço (risco)',600,2,0,[.5,0])),c('Meta do mês batida!',ok('Bônus de R$ 300',300,1))],
+est:[c('Plano estratégico aprovado.',ok('Executar',400)),c('Concorrente lançou produto novo.',ok('Reagir rápido: R$ 300',-300,1),ok('Esperar',-100)),c('Nova ideia de posicionamento.',ok('Aplicar',200,1))],
+neg:[c('Reunião difícil com cliente.',ok('Negociar firme',300,1),ok('Ceder',-150)),c('Fornecedor oferece desconto.',ok('Aceitar',250)),c('Acordo quase fechado... e o cliente some.',ok('Insistir (risco)',500,1,0,[.4,-200]),ok('Desistir'))],
+cli:[c('Cliente elogiou seu atendimento!',ok('Pedir indicação',250,1)),c('Cliente reclama do prazo.',ok('Compensar R$ 200',-200,1),ok('Ignorar',-300)),c('Programa de fidelidade lançado.',ok('Lançar R$ 150',-150,2))],
+des:[c('Surpresa! Cliente antigo voltou.',ok('Ótimo!',400,1)),c('O sistema caiu em plena venda.',ok('Resolver',-300)),c('Feira de negócios na cidade!',ok('Participar R$ 200',300,2,0,[.6,-200]),ok('Ficar'))],
+trab:[c('Salário extra e freela!',ok('Receber',400)),c('Oportunidade de promoção.',ok('Fazer curso R$ 200',500,0,0,[.7,-200]),ok('Ignorar'))],
+dec:[c('Sobrou um dinheiro no mês.',ok('Gastar com lazer',-200),ok('Guardar',200)),c('Compra parcelada tentadora.',ok('Comprar',-400),ok('Resistir',100)),c('Vender o carro velho?',ok('Vender',500),ok('Ficar',0))],
+cred:[c('Fatura do cartão chegou!',ok('Pagar R$ 400',-400),ok('Parcelar (juros)',-600)),c('Cashback no cartão.',ok('Receber',150))],
+inv:[c('Ação em alta!',ok('Investir R$ 400',-400,0,400,[1,0]),ok('Observar')),c('Fundo imobiliário rendendo.',ok('Investir R$ 300',-300,0,330)),c('Investimento arriscado.',ok('Arriscar R$ 500',-500,0,900,[.5,0]),ok('Passar'))],
+sorte:[c('Você achou dinheiro no bolso!',ok('Pegar',200)),c('Ganhou um sorteio!',ok('Receber',500)),c('Furou o pneu...',ok('Consertar',-250))],
+casa:[c('Hora de dar entrada na casa!',ok('Entrada R$ 600',-600,0,800)),c('Reforma na casa própria.',ok('Reformar',-300,0,100))],
+eco:[c('Você economizou no mês.',ok('Guardar',300)),c('Corte de gastos supérfluos.',ok('Cortar',200))],
+imp:[c('Imprevisto médico!',ok('Pagar',-400)),c('Geladeira quebrou.',ok('Trocar',-350))],
+desp:[c('Contas do mês.',ok('Pagar',-300)),c('Promoção irresistível.',ok('Comprar',-200),ok('Ignorar',100))],
+rel:[c('Amigo oferece uma indicação de trabalho.',ok('Aceitar',350)),c('Família ajuda com um apoio.',ok('Receber',250))],
+viag:[c('Viagem dos sonhos!',ok('Viajar R$ 500',-500,0,0),ok('Adiar',100)),c('Passagem em promoção.',ok('Comprar',-250))]};
+const mk=s=>s.split(',');
+const G={
+mkt:{n:'Marketing & Vendas',ic:'📣',start:2000,dice:1,tiles:mk('start,mkt,des,est,neg,ven,cli,mkt,est,neg,ven,cli,start,mkt,des,est,neg,ven,cli,des,est,neg,ven,des'),dk:{start:0},sc:'🛒'},
+fin:{n:'Finanças & Decisão',ic:'💰',start:3000,dice:2,tiles:mk('start,trab,dec,cred,inv,sorte,casa,eco,imp,dec,inv,sorte,rel,sorte,desp,viag,inv,dec,trab,desp,sorte,inv,desp,dec'),sc:'📈'}};
+G.mkt.tiles=G.mkt.tiles.map(x=>x=='des'?'des':x);
+let sel='mkt',np=3,cfg,P,turn,busy;
+document.querySelectorAll('.gc').forEach(b=>b.onclick=()=>{sel=b.dataset.g;document.querySelectorAll('.gc').forEach(x=>x.classList.toggle('sel',x==b))});
+document.querySelectorAll('.pill').forEach(b=>b.onclick=()=>{np=+b.dataset.n;document.querySelectorAll('.pill').forEach(x=>x.classList.toggle('sel',x==b))});
+$('#go').onclick=()=>{cfg=G[sel];P=Array.from({length:np},(_,i)=>({n:'Jogador '+(i+1),c:COL[i],pos:0,lap:0,m:cfg.start,s:0,v:0,done:0}));turn=0;busy=0;
+ $('#menu').style.display='none';$('#game').style.display='block';$('#gt').textContent=cfg.ic+' '+cfg.n;$('#ct').textContent=cfg.n;
+ document.querySelectorAll('.tile').forEach(e=>e.remove());
+ const pos=[];for(let c=0;c<8;c++)pos.push([1,c]);for(let r=1;r<6;r++)pos.push([r,7]);for(let c=6;c>=0;c--)pos.push([5,c]);for(let r=4;r>=1;r--)pos.push([r,0]);
+ cfg.tiles.forEach((k,i)=>{const t=T[k],d=document.createElement('div');d.className='tile'+(t[4]?' y':'');d.id='t'+i;d.style.background=t[0];d.style.gridArea=(pos[i][0]+1)+'/'+(pos[i][1]+1);d.innerHTML='<i>'+t[1]+'</i>'+t[2]+'<div class="pw"></div>';$('#board').appendChild(d)});
+ render();say('Vez de '+P[0].n+'. Role o dado!');$('#roll').disabled=false};
+$('#back').onclick=()=>{$('#game').style.display='none';$('#menu').style.display='block'};
+const score=p=>p.m+p.v+p.s*100;
+function say(t){$('#st').textContent=t}
+function render(){
+ $('#score').innerHTML=P.map((p,i)=>`<div class="pl ${i==turn?'on':''}"><b><span class="dot" style="background:${p.c}"></span>${p.n}${p.done?' 🏁':''}</b>💰 R$ ${p.m.toLocaleString('pt-BR')}<br>${cfg.sc} ${cfg==G.mkt?p.s+' vendas':'R$ '+p.v.toLocaleString('pt-BR')}<br>🔁 Volta ${Math.min(p.lap+1,LAPS)}/${LAPS}</div>`).join('');
+ document.querySelectorAll('.pw').forEach(e=>e.innerHTML='');
+ P.forEach(p=>{$('#t'+p.pos+' .pw').innerHTML+=`<span style="background:${p.c}"></span>`});}
+$('#roll').onclick=async()=>{
+ if(busy)return;busy=1;$('#roll').disabled=true;const p=P[turn],dc=$('#dice');
+ dc.classList.add('roll');await sleep(700);dc.classList.remove('roll');
+ const ds=Array.from({length:cfg.dice},()=>1+Math.floor(Math.random()*6)),tot=ds.reduce((a,b)=>a+b);
+ dc.textContent=ds.map(d=>FACES[d-1]).join(' ');say(p.n+' tirou '+tot+'!');
+ for(let i=0;i<tot;i++){await sleep(260);p.pos=(p.pos+1)%24;
+  if(p.pos==0){p.lap++;const g=Math.round(p.v*.1);p.m+=200;p.v+=g;say('Passou pelo início: +R$ 200'+(g?' e seu patrimônio rendeu +R$ '+g:''));
+   if(p.lap>=LAPS){p.done=1;render();await sleep(700);return next()}}
+  render()}
+ await sleep(300);land(p)};
+function land(p){const k=cfg.tiles[p.pos];if(k=='start'){say('Casa de descanso. 😌');return next()}
+ const t=T[k],card=D[k][Math.floor(Math.random()*D[k].length)];
+ $('#mb').style.borderTopColor=t[0];
+ $('#mb').innerHTML=`<h2>${t[1]} ${t[2]} · ${p.n}</h2><p>${card.t}</p>`;
+ card.o.forEach(o=>{const b=document.createElement('button');b.textContent=o[0];b.onclick=()=>{$('#modal').style.display='none';apply(p,o)};$('#mb').appendChild(b)});
+ $('#modal').style.display='flex'}
+async function apply(p,o){let[,m,s,v,r]=o;if(r&&Math.random()>r[0]){m=r[1];s=0;v=0;say('😬 Deu errado! '+(m<0?'-R$ '+(-m):'Nada ganhou'))}else say((m>=0?'✅ +':'💸 -')+'R$ '+Math.abs(m)+(s?' e +'+s+' venda(s)':''));
+ p.m=Math.max(0,p.m+m);if(cfg==G.mkt)p.s+=s;else p.v=Math.max(0,p.v+v);render();await sleep(1400);next()}
+function next(){render();
+ if(P.every(p=>p.done)){const r=[...P].sort((a,b)=>score(b)-score(a));
+  $('#mb').style.borderTopColor='#fbbf24';$('#mb').innerHTML='<h2>🏆 Fim de jogo</h2><p><b>'+r[0].n+' venceu!</b></p>'+r.map((p,i)=>`<div style="padding:4px 0">${['🥇','🥈','🥉','4º'][i]} ${p.n}: R$ ${score(p).toLocaleString('pt-BR')}</div>`).join('')+'<button onclick="location.reload()">Jogar de novo</button>';
+  $('#modal').style.display='flex';return}
+ do{turn=(turn+1)%P.length}while(P[turn].done);
+ render();say('Vez de '+P[turn].n+'. Role o dado!');busy=0;$('#roll').disabled=false}
+</script></body></html>
